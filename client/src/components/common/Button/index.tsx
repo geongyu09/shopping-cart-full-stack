@@ -13,6 +13,10 @@ const Button = styled.button<ButtonProps>`
   line-height: 1rem;
   padding-block: 1.5rem;
   width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+  :disabled {
+    background-color: ${COLOR_PALETTE.disabled};
+    border: none;
+  }
 `;
 
 export default Button;
