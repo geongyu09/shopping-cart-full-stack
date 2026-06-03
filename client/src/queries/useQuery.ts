@@ -4,13 +4,11 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import QueryStore from "./stores/queryStore";
+import { queryStore } from "@/queries/instance";
 interface UseQueryParams<T> {
   key: string;
   queryFn: () => Promise<T>;
 }
-
-const queryStore = new QueryStore();
 
 export default function useQuery<T>({ key, queryFn }: UseQueryParams<T>) {
   const setFlush = useState(false)[1];
