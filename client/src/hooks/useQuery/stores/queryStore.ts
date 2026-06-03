@@ -1,14 +1,32 @@
 export default class QueryStore {
   private queryCache: Map<string, unknown>;
+  private promiseCache: Map<string, Promise<unknown>>;
   private listeners: Map<string, Set<() => void>>;
 
   constructor() {
     this.queryCache = new Map();
+    this.promiseCache = new Map();
     this.listeners = new Map();
   }
 
   getSnapshot(key: string) {
     return this.queryCache.get(key);
+  }
+
+  fetch<T>(key: string, queryFn: () => Promise<T>): Promise<T> {
+    const inFlight = this.promiseCache.get(key);
+    if (inFlight) {
+      return inFlight as Promise<T>;
+    }
+
+    const promise = queryFn().then((data) => {
+      this.set(key, data);
+      return data;
+    });
+
+    this.promiseCache.set(key, promise);
+
+    return promise;
   }
 
   set(key: string, data: unknown) {
@@ -18,6 +36,7 @@ export default class QueryStore {
 
   invalidate(key: string) {
     this.queryCache.delete(key);
+    this.promiseCache.delete(key);
     this.listeners.get(key)?.forEach((callback) => callback());
   }
 

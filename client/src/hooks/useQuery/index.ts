@@ -14,7 +14,6 @@ const queryStore = new QueryStore();
 
 export default function useQuery<T>({ key, queryFn }: UseQueryParams<T>) {
   const setFlush = useState(false)[1];
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const data = useSyncExternalStore<T | undefined>(
@@ -27,28 +26,21 @@ export default function useQuery<T>({ key, queryFn }: UseQueryParams<T>) {
   useEffect(() => {
     let isMounted = true;
     if (data) {
-      Promise.resolve(() => setIsLoading(false));
       return;
     }
 
-    queryFnEvent()
-      .then((response) => {
-        if (isMounted) {
-          queryStore.set(key, response);
-          setIsLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (isMounted) {
-          setError(err);
-          setIsLoading(false);
-        }
-      });
+    queryStore.fetch(key, queryFnEvent).catch((err) => {
+      if (isMounted) {
+        setError(err);
+      }
+    });
 
     return () => {
       isMounted = false;
     };
   }, [key, data]);
+
+  const isLoading = data === undefined && error === null;
 
   return { data, isLoading, error };
 }
