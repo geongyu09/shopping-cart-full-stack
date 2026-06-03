@@ -8,8 +8,11 @@ import { COLOR_PALETTE } from "@styles/colorPalette";
 
 interface CartItemProps {
   name: string;
+  image: string;
   price: number;
   quantity: number;
+  checked: boolean;
+  onSelect: () => void;
   onPlus: () => void;
   onMinus: () => void;
   onDelete: () => void;
@@ -17,8 +20,11 @@ interface CartItemProps {
 
 export default function CartItem({
   name,
+  image,
   price,
   quantity,
+  checked,
+  onSelect,
   onPlus,
   onMinus,
   onDelete,
@@ -28,12 +34,12 @@ export default function CartItem({
       <Divider />
       <Spacing size={0.75} />
       <ActionButtonWrapper>
-        <CheckBox />
+        <CheckBox checked={checked} onChange={onSelect} />
         <DeleteButton onClick={onDelete}>삭제</DeleteButton>
       </ActionButtonWrapper>
       <Spacing size={0.75} />
       <CartItemInfoContainer>
-        <CartItemImg src="" alt="" />
+        <CartItemImg src={image} alt={name} />
         <CartItemInfoWrapper>
           <ProductInfoWrapper>
             <CartItemName>{name}</CartItemName>
