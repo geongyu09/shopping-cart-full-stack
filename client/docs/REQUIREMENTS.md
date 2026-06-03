@@ -4,11 +4,11 @@
 src/
 ├── pages/
 │   ├── pageA/
-│   │   ├── pageA.tsx
-│   │   └── pageA.test.ts
+│   │   ├── index.tsx
+│   │   └── index.test.ts
 │   └── pageB/
-│       ├── pageB.tsx
-│       └── pageB.test.ts
+│       ├── index.tsx
+│       └── index.test.ts
 │
 ├── components/
 │   ├── feature/                  # 도메인 o
