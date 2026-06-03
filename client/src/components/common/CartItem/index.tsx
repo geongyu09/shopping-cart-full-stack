@@ -2,6 +2,7 @@ import minus from "@assets/minus.svg";
 import plus from "@assets/plus.svg";
 import Spacing from "@components/common//Spacing";
 import CheckBox from "@components/common/CheckBox";
+import Divider from "@components/common/Divider";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 
@@ -50,13 +51,6 @@ export default function CartItem({
 }
 
 const CartItemContainer = styled.li``;
-
-const Divider = styled.hr`
-  width: 100%;
-  height: 1px;
-  border: none;
-  background-color: ${COLOR_PALETTE.border};
-`;
 
 const ActionButtonWrapper = styled.div`
   display: flex;
