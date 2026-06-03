@@ -3,6 +3,7 @@ import useQuery from "./useQuery";
 
 export default function useCartQuery() {
   return useQuery({
+    key: "cart",
     queryFn: getCart,
   });
 }
