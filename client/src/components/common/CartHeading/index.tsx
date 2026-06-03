@@ -1,15 +1,10 @@
 import styled from "@emotion/styled";
-import useCartQuery from "@hooks/useCartQuery";
 
-export default function CartHeading() {
-  const { data } = useCartQuery();
+interface CartHeadingProps {
+  productCount: number;
+}
 
-  if (!data) {
-    return null;
-  }
-
-  const productCount = data.length;
-
+export default function CartHeading({ productCount }: CartHeadingProps) {
   return (
     <CartHeadingContainer>
       <Heading>장바구니</Heading>

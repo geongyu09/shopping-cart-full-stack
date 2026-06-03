@@ -1,38 +1,14 @@
-import CartOrderAmount from "@components/common/CartOrderAmount";
-import CartList from "@components/feature/CartList";
+import CartsSection from "@/components/feature/CartsSection";
 import Header from "@components/common/Header";
 import Logo from "@components/common/Logo";
-import PositionBottom from "@components/common/PositionBottom";
 import Spacing from "@components/common/Spacing";
-import CartHeading from "@components/feature/CartHeading";
-import OrderConfirmButton from "@components/feature/OrderConfirmButton";
-import styled from "@emotion/styled";
 
 export default function CartsPage() {
   return (
     <>
       <Header LeftComponent={<Logo />} />
-      <ContentContainer>
-        <Spacing size={2.25} />
-        <CartHeading />
-        <Spacing size={2.25} />
-        <CartList>
-          {({ orderAmount, selectedItems }) => (
-            <>
-              <CartOrderAmount orderAmount={orderAmount} />
-              <PositionBottom>
-                <OrderConfirmButton disabled={selectedItems.length === 0} />
-              </PositionBottom>
-            </>
-          )}
-        </CartList>
-      </ContentContainer>
+      <CartsSection />
       <Spacing size={7} />
     </>
   );
 }
-
-const ContentContainer = styled.section`
-  width: 100%;
-  padding-inline: 1.5rem;
-`;
