@@ -1,18 +1,7 @@
+import type { Cart } from "@/types/cartProduct";
 import fetcher from "../instance";
 
 const CARTS_API = "/carts";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-}
-
-interface Cart {
-  product: Product;
-  quantity: number;
-}
 
 interface GetCartResponse {
   status: "success" | "error";
