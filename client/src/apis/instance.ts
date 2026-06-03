@@ -33,12 +33,14 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+const baseUrl = import.meta.env.DEV ? "/api" : "production url";
+
 const fetcher = {
   get: async <Response>(
     uri: string,
     headers?: HeadersInit,
   ): Promise<Response> => {
-    const response = await fetch(uri, {
+    const response = await fetch(baseUrl + uri, {
       method: "GET",
       headers,
     });
@@ -50,7 +52,7 @@ const fetcher = {
     body: object,
     headers?: HeadersInit,
   ): Promise<Response> => {
-    const response = await fetch(uri, {
+    const response = await fetch(baseUrl + uri, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +67,7 @@ const fetcher = {
     uri: string,
     headers?: HeadersInit,
   ): Promise<Response> => {
-    const response = await fetch(uri, {
+    const response = await fetch(baseUrl + uri, {
       method: "DELETE",
       headers,
     });
