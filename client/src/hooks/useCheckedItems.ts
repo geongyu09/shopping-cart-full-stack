@@ -1,0 +1,21 @@
+import { useState } from "react";
+
+export default function useCheckedItems<T>() {
+  const [checkedItems, setCheckedItems] = useState<T[]>([]);
+
+  const select = (item: T) => {
+    setCheckedItems((prev) => [...prev, item]);
+  };
+
+  const unselect = (item: T) => {
+    setCheckedItems((prev) =>
+      prev.filter((prevItem) => Object.is(prevItem, item)),
+    );
+  };
+
+  const unselectAll = () => {
+    setCheckedItems([]);
+  };
+
+  return { checkedItems, select, unselect, unselectAll };
+}

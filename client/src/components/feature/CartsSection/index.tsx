@@ -7,12 +7,13 @@ import PositionBottom from "@components/common/PositionBottom";
 import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
 import useCartQuery from "@hooks/useCartQuery";
-import { useState } from "react";
+import useCheckedItems from "@hooks/useCheckedItems";
 
 export default function CartsSection() {
   const { data } = useCartQuery();
 
-  const [checkedItems, setCheckedItems] = useState<Product["id"][]>([]);
+  const { checkedItems, select, unselect, unselectAll } =
+    useCheckedItems<Product["id"]>();
 
   if (!data) {
     return null;
@@ -26,18 +27,16 @@ export default function CartsSection() {
 
   const handleSelectAll = () => {
     if (checkedItems.length === data.length) {
-      setCheckedItems([]);
-      return;
+      return unselectAll();
     }
-    setCheckedItems(data.map(({ product }) => product.id));
+    data.forEach(({ product }) => select(product.id));
   };
 
   const handleSelect = (id: number) => {
     if (checkedItems.includes(id)) {
-      setCheckedItems((prev) => prev.filter((prevId) => prevId !== id));
-      return;
+      return unselect(id);
     }
-    setCheckedItems((prev) => [...prev, id]);
+    select(id);
   };
 
   return (
