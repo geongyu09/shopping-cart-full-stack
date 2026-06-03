@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import useCartQuery from "@hooks/useCartQuery";
 
-export default function CartHeadingSection() {
+export default function CartHeading() {
   const { data } = useCartQuery();
 
   if (!data) {
@@ -11,16 +11,16 @@ export default function CartHeadingSection() {
   const productCount = data.length;
 
   return (
-    <CartHeadingSectionContainer>
+    <CartHeadingContainer>
       <Heading>장바구니</Heading>
       <Description visible={productCount > 0}>
         현재 {productCount}종류의 상품이 담겨있습니다.
       </Description>
-    </CartHeadingSectionContainer>
+    </CartHeadingContainer>
   );
 }
 
-const CartHeadingSectionContainer = styled.div`
+const CartHeadingContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;

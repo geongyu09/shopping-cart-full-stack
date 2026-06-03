@@ -1,12 +1,13 @@
+import type { Product } from "@/types/cartProduct";
 import CartItem from "@components/common/CartItem";
+import CartOrderAmount from "@components/common/CartOrderAmount";
 import CheckBox from "@components/common/CheckBox";
 import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
 import useCartQuery from "@hooks/useCartQuery";
 import { useState } from "react";
-import type { Product } from "@/types/cartProduct";
 
-export default function CartListSection() {
+export default function CartList() {
   const { data } = useCartQuery();
 
   const [checkedItems, setCheckedItems] = useState<Product["id"][]>([]);
@@ -32,34 +33,38 @@ export default function CartListSection() {
   };
 
   return (
-    <CartListSectionContainer>
-      <SelectAllWrapper>
-        <CheckBox
-          checked={checkedItems.length === data.length}
-          onChange={handleSelectAll}
-        />
-        전체선택
-      </SelectAllWrapper>
-      <Spacing size={1.25} />
-      <CartListWrapper>
-        {data.map(({ product, quantity }) => (
-          <CartItem
-            key={product.id}
-            {...product}
-            quantity={quantity}
-            checked={checkedItems.includes(product.id)}
-            onSelect={() => handleSelect(product.id)}
-            onPlus={() => {}}
-            onMinus={() => {}}
-            onDelete={() => {}}
+    <>
+      <CartListContainer>
+        <SelectAllWrapper>
+          <CheckBox
+            checked={checkedItems.length === data.length}
+            onChange={handleSelectAll}
           />
-        ))}
-      </CartListWrapper>
-    </CartListSectionContainer>
+          전체선택
+        </SelectAllWrapper>
+        <Spacing size={1.25} />
+        <CartListWrapper>
+          {data.map(({ product, quantity }) => (
+            <CartItem
+              key={product.id}
+              {...product}
+              quantity={quantity}
+              checked={checkedItems.includes(product.id)}
+              onSelect={() => handleSelect(product.id)}
+              onPlus={() => {}}
+              onMinus={() => {}}
+              onDelete={() => {}}
+            />
+          ))}
+        </CartListWrapper>
+        <Spacing size={3.25} />
+        <CartOrderAmount orderAmount={0} />
+      </CartListContainer>
+    </>
   );
 }
 
-const CartListSectionContainer = styled.div`
+const CartListContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;

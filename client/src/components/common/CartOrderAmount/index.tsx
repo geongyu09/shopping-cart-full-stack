@@ -3,9 +3,15 @@ import info from "@assets/info.svg";
 import Spacing from "@components/common/Spacing";
 import Divider from "@components/common/Divider";
 
-export default function CartOrderAmountSection() {
+interface CartOrderAmountProps {
+  orderAmount: number;
+}
+
+export default function CartOrderAmount({ orderAmount }: CartOrderAmountProps) {
+  const deliveryFee = orderAmount >= 100000 ? 0 : 3000;
+
   return (
-    <CartOrderAmountSectionContainer>
+    <CartOrderAmountContainer>
       <OrderAmountInfoWrapper>
         <InfoIcon src={info} alt="정보" />
         <InfoText>
@@ -17,25 +23,35 @@ export default function CartOrderAmountSection() {
       <Spacing size={0.75} />
       <CartOrderAmountInfoContainer>
         <CartOrderAmountInfoLabel>총 주문 금액</CartOrderAmountInfoLabel>
-        <CartOrderAmountInfoValue>300,000원</CartOrderAmountInfoValue>
+        <CartOrderAmountInfoValue>
+          {orderAmount?.toLocaleString()}원
+        </CartOrderAmountInfoValue>
       </CartOrderAmountInfoContainer>
       <Spacing size={0.5} />
       <CartOrderAmountInfoContainer>
         <CartOrderAmountInfoLabel>배송비</CartOrderAmountInfoLabel>
-        <CartOrderAmountInfoValue>300,000원</CartOrderAmountInfoValue>
+        <CartOrderAmountInfoValue>
+          {deliveryFee?.toLocaleString()}원
+        </CartOrderAmountInfoValue>
       </CartOrderAmountInfoContainer>
       <Spacing size={0.75} />
       <Divider />
       <Spacing size={0.75} />
       <CartOrderAmountInfoContainer>
         <CartOrderAmountInfoLabel>총 결제 금액</CartOrderAmountInfoLabel>
-        <CartOrderAmountInfoValue>300,000원</CartOrderAmountInfoValue>
+        <CartOrderAmountInfoValue>
+          {(orderAmount && deliveryFee
+            ? orderAmount + deliveryFee
+            : 0
+          ).toLocaleString()}
+          원
+        </CartOrderAmountInfoValue>
       </CartOrderAmountInfoContainer>
-    </CartOrderAmountSectionContainer>
+    </CartOrderAmountContainer>
   );
 }
 
-const CartOrderAmountSectionContainer = styled.div``;
+const CartOrderAmountContainer = styled.div``;
 
 const OrderAmountInfoWrapper = styled.div`
   display: flex;
