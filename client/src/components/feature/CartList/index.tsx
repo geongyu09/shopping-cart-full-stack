@@ -16,6 +16,12 @@ export default function CartList() {
     return null;
   }
 
+  const orderAmount = data.reduce((acc, { product, quantity }) => {
+    return (
+      acc + (checkedItems.includes(product.id) ? product.price * quantity : 0)
+    );
+  }, 0);
+
   const handleSelectAll = () => {
     if (checkedItems.length === data.length) {
       setCheckedItems([]);
@@ -58,7 +64,7 @@ export default function CartList() {
           ))}
         </CartListWrapper>
         <Spacing size={3.25} />
-        <CartOrderAmount orderAmount={0} />
+        <CartOrderAmount orderAmount={orderAmount} />
       </CartListContainer>
     </>
   );
