@@ -2,8 +2,15 @@ import CartItem from "@components/common/CartItem";
 import CheckBox from "@components/common/CheckBox";
 import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
+import useCartQuery from "@hooks/useCartQuery";
 
 export default function CartListSection() {
+  const { data } = useCartQuery();
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <CartListSectionContainer>
       <SelectAllWrapper>
@@ -12,11 +19,11 @@ export default function CartListSection() {
       </SelectAllWrapper>
       <Spacing size={1.25} />
       <CartListWrapper>
-        {[1, 2, 3].map((item) => (
+        {data.map(({ product: { id, name, price } }) => (
           <CartItem
-            key={item}
-            name="상품이름 A"
-            price={30000}
+            key={id}
+            name={name}
+            price={price}
             quantity={0}
             onPlus={() => {}}
             onMinus={() => {}}

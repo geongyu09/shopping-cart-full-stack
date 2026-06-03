@@ -1,7 +1,14 @@
 import styled from "@emotion/styled";
+import useCartQuery from "@hooks/useCartQuery";
 
 export default function CartHeadingSection() {
-  const productCount = 2;
+  const { data } = useCartQuery();
+
+  if (!data) {
+    return null;
+  }
+
+  const productCount = data.length;
 
   return (
     <CartHeadingSectionContainer>
