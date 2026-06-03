@@ -1,4 +1,5 @@
-import CartList from "@/components/feature/CartList";
+import CartOrderAmount from "@components/common/CartOrderAmount";
+import CartList from "@components/feature/CartList";
 import Header from "@components/common/Header";
 import Logo from "@components/common/Logo";
 import PositionBottom from "@components/common/PositionBottom";
@@ -15,12 +16,18 @@ export default function CartsPage() {
         <Spacing size={2.25} />
         <CartHeading />
         <Spacing size={2.25} />
-        <CartList />
+        <CartList>
+          {({ orderAmount, selectedItems }) => (
+            <>
+              <CartOrderAmount orderAmount={orderAmount} />
+              <PositionBottom>
+                <OrderConfirmButton disabled={selectedItems.length === 0} />
+              </PositionBottom>
+            </>
+          )}
+        </CartList>
       </ContentContainer>
       <Spacing size={7} />
-      <PositionBottom>
-        <OrderConfirmButton />
-      </PositionBottom>
     </>
   );
 }

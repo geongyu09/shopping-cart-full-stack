@@ -1,13 +1,22 @@
 import type { Product } from "@/types/cartProduct";
 import CartItem from "@components/common/CartItem";
-import CartOrderAmount from "@components/common/CartOrderAmount";
 import CheckBox from "@components/common/CheckBox";
 import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
 import useCartQuery from "@hooks/useCartQuery";
 import { useState } from "react";
 
-export default function CartList() {
+interface CartListProps {
+  children: ({
+    orderAmount,
+    selectedItems,
+  }: {
+    orderAmount: number;
+    selectedItems: Product["id"][];
+  }) => React.ReactNode;
+}
+
+export default function CartList({ children }: CartListProps) {
   const { data } = useCartQuery();
 
   const [checkedItems, setCheckedItems] = useState<Product["id"][]>([]);
@@ -64,7 +73,7 @@ export default function CartList() {
           ))}
         </CartListWrapper>
         <Spacing size={3.25} />
-        <CartOrderAmount orderAmount={orderAmount} />
+        {children({ orderAmount, selectedItems: checkedItems })}
       </CartListContainer>
     </>
   );
