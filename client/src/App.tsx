@@ -1,17 +1,16 @@
-import Button from "@components/common/Button";
-import PositionBottom from "@components/common/PositionBottom";
-import GlobalStyle from "@styles/GlobalStyle";
+import { BrowserRouter, Route, Routes } from "react-router";
+
+import CartsPage from "@pages/CartsPage";
+import OrderConfirmPage from "@pages/OrderConfirmPage";
 
 function App() {
   return (
-    <>
-      <GlobalStyle />
-      <PositionBottom>
-        <Button fullWidth disabled>
-          hihButtonii
-        </Button>
-      </PositionBottom>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/carts" element={<CartsPage />} />
+        <Route path="/order-confirm" element={<OrderConfirmPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
