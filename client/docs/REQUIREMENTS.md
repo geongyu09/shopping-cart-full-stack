@@ -30,7 +30,10 @@ src/
 │   └── ...
 │
 ├── hooks/
-│   └── hookA.ts
+│   ├── hookA.ts
+│   └── useQuery/
+│       ├── stores/
+│       └── index.ts
 │
 └── apis/
     ├── instance.ts
