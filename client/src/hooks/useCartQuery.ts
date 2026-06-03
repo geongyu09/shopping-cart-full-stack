@@ -1,5 +1,5 @@
 import { getCart } from "@apis/carts";
-import useQuery from "./useQuery";
+import useQuery from "@/queries/useQuery";
 
 export default function useCartQuery() {
   return useQuery({
