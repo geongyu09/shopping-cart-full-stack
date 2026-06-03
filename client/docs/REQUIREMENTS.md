@@ -36,13 +36,13 @@ src/
     ├── instance.ts
     ├── types.ts
     ├── endpoint1/
-    │   ├── apis.ts
+    │   ├── index.ts
     │   └── types.ts
     └── endpoint1/
         ├── [productId]/
-        │   ├── api.ts
+        │   ├── index.ts
         │   └── types.ts
-        ├── api.ts
+        ├── index.ts
         └── types.ts
 ```
 
