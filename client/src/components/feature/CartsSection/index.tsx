@@ -25,15 +25,11 @@ export default function CartsSection() {
 
   const initialCheckedItems =
     getCheckedItemsFromLocalStorage().length === 0
-      ? (data ?? []).map(({ product }) => product.id)
+      ? data.map(({ product }) => product.id)
       : getCheckedItemsFromLocalStorage();
 
   const { checkedItems, select, unselect, unselectAll } =
     useCheckedItems<Product["id"]>(initialCheckedItems);
-
-  if (!data) {
-    return null;
-  }
 
   const orderAmount = data.reduce((acc, { product, quantity }) => {
     return (
@@ -50,12 +46,8 @@ export default function CartsSection() {
       return unselectAll();
     }
 
-    setCheckedItemsToLocalStorage([
-      ...new Set([...checkedItems, ...data.map(({ product }) => product.id)]),
-    ]);
-    data.forEach(({ product }) => {
-      select(product.id);
-    });
+    setCheckedItemsToLocalStorage(data.map(({ product }) => product.id));
+    data.forEach(({ product }) => select(product.id));
   };
 
   const handleSelect = (id: number) => {

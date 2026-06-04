@@ -6,7 +6,7 @@ export default function useCheckedItems<T>(initialCheckedItems?: T[]) {
   );
 
   const select = (item: T) => {
-    setCheckedItems((prev) => [...prev, item]);
+    setCheckedItems((prev) => [...new Set([...prev, item])]);
   };
 
   const unselect = (item: T) => {
