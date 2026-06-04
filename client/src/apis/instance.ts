@@ -63,6 +63,22 @@ const fetcher = {
     return handleResponse<Response>(response);
   },
 
+  patch: async <Response>(
+    uri: string,
+    body: object,
+    headers?: HeadersInit,
+  ): Promise<Response> => {
+    const response = await fetch(baseUrl + uri, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body: JSON.stringify(body),
+    });
+    return handleResponse<Response>(response);
+  },
+
   delete: async <Response = null>(
     uri: string,
     headers?: HeadersInit,
