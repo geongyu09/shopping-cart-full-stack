@@ -57,18 +57,26 @@ export default function CartsSection() {
   return (
     <ContentContainer>
       <Spacing size={2.25} />
-      <CartHeading productCount={data.length || 0} />
+      <CartHeading productCount={data.length} />
       <Spacing size={2.25} />
-      <CartList
-        cartProducts={data}
-        checkedItems={checkedItems}
-        onSelectAll={handleSelectAll}
-        onSelect={handleSelect}
-        onPlus={(id) => handleQuantityChange(id, "plus")}
-        onMinus={(id) => handleQuantityChange(id, "minus")}
-        onDelete={handleDelete}
-      />
-      <CartOrderAmount orderAmount={orderAmount} />
+      {data.length !== 0 ? (
+        <>
+          <CartList
+            cartProducts={data}
+            checkedItems={checkedItems}
+            onSelectAll={handleSelectAll}
+            onSelect={handleSelect}
+            onPlus={(id) => handleQuantityChange(id, "plus")}
+            onMinus={(id) => handleQuantityChange(id, "minus")}
+            onDelete={handleDelete}
+          />
+          <CartOrderAmount orderAmount={orderAmount} />
+        </>
+      ) : (
+        <EmptyCartContainer>
+          <EmptyCartText>장바구니에 담은 상품이 없습니다.</EmptyCartText>
+        </EmptyCartContainer>
+      )}
       <PositionBottom>
         <Button fullWidth disabled={checkedItems.length === 0}>
           주문 확인
@@ -81,4 +89,21 @@ export default function CartsSection() {
 const ContentContainer = styled.section`
   width: 100%;
   padding-inline: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+`;
+
+const EmptyCartContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`;
+
+const EmptyCartText = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
 `;
