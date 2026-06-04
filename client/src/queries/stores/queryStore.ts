@@ -1,11 +1,13 @@
 export default class QueryStore {
   private queryCache: Map<string, unknown>;
   private promiseCache: Map<string, Promise<unknown>>;
+  private errorCache: Map<string, Error>;
   private listeners: Map<string, Set<() => void>>;
 
   constructor() {
     this.queryCache = new Map();
     this.promiseCache = new Map();
+    this.errorCache = new Map();
     this.listeners = new Map();
   }
 
@@ -13,30 +15,45 @@ export default class QueryStore {
     return this.queryCache.get(key);
   }
 
-  fetch<T>(key: string, queryFn: () => Promise<T>): Promise<T> {
+  getError(key: string) {
+    return this.errorCache.get(key);
+  }
+
+  fetch<T>(key: string, queryFn: () => Promise<T>) {
     const inFlight = this.promiseCache.get(key);
     if (inFlight) {
       return inFlight as Promise<T>;
     }
 
-    const promise = queryFn().then((data) => {
-      this.set(key, data);
-      return data;
-    });
+    const promise = queryFn()
+      .then((data) => {
+        this.setQuery(key, data);
+        return data;
+      })
+      .catch((error) => {
+        this.setError(key, error);
+        throw error;
+      });
 
     this.promiseCache.set(key, promise);
 
     return promise;
   }
 
-  set(key: string, data: unknown) {
+  setQuery(key: string, data: unknown) {
     this.queryCache.set(key, data);
+    this.listeners.get(key)?.forEach((callback) => callback());
+  }
+
+  setError(key: string, error: unknown) {
+    this.queryCache.set(key, error);
     this.listeners.get(key)?.forEach((callback) => callback());
   }
 
   invalidate(key: string) {
     this.queryCache.delete(key);
     this.promiseCache.delete(key);
+    this.errorCache.delete(key);
     this.listeners.get(key)?.forEach((callback) => callback());
   }
 

@@ -1,10 +1,10 @@
 import { getCart } from "@apis/carts";
-import useQuery from "@/queries/useQuery";
+import useSuspenseQuery from "@/queries/useSuspenseQuery";
 
 export const CART_QUERY_KEY = "cart";
 
 export default function useCartQuery() {
-  return useQuery({
+  return useSuspenseQuery({
     key: CART_QUERY_KEY,
     queryFn: getCart,
   });
