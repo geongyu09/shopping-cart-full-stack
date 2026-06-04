@@ -9,7 +9,7 @@ export default function useCheckedItems<T>() {
 
   const unselect = (item: T) => {
     setCheckedItems((prev) =>
-      prev.filter((prevItem) => Object.is(prevItem, item)),
+      prev.filter((prevItem) => !Object.is(prevItem, item)),
     );
   };
 
