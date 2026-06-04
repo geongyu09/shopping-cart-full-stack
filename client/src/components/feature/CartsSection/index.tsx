@@ -11,6 +11,11 @@ import styled from "@emotion/styled";
 import useCartQuery from "@hooks/useCartQuery";
 import useCheckedItems from "@hooks/useCheckedItems";
 import useOrderConfirmNavigate from "@/hooks/useOrderConfirmNavigate";
+import {
+  getCheckedItemsFromLocalStorage,
+  removeCheckedItemsFromLocalStorage,
+  setCheckedItemsToLocalStorage,
+} from "./libs/localstorage";
 
 export default function CartsSection() {
   const { data } = useCartQuery();
@@ -18,8 +23,13 @@ export default function CartsSection() {
   const { mutate: deleteMutate } = useCartItemDeleteMutation();
   const { navigate } = useOrderConfirmNavigate();
 
+  const initialCheckedItems =
+    getCheckedItemsFromLocalStorage().length === 0
+      ? (data ?? []).map(({ product }) => product.id)
+      : getCheckedItemsFromLocalStorage();
+
   const { checkedItems, select, unselect, unselectAll } =
-    useCheckedItems<Product["id"]>();
+    useCheckedItems<Product["id"]>(initialCheckedItems);
 
   if (!data) {
     return null;
@@ -36,15 +46,25 @@ export default function CartsSection() {
 
   const handleSelectAll = () => {
     if (checkedItems.length === data.length) {
+      removeCheckedItemsFromLocalStorage();
       return unselectAll();
     }
-    data.forEach(({ product }) => select(product.id));
+
+    setCheckedItemsToLocalStorage([
+      ...new Set([...checkedItems, ...data.map(({ product }) => product.id)]),
+    ]);
+    data.forEach(({ product }) => {
+      select(product.id);
+    });
   };
 
   const handleSelect = (id: number) => {
     if (checkedItems.includes(id)) {
+      setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
       return unselect(id);
     }
+
+    setCheckedItemsToLocalStorage([...new Set([...checkedItems, id])]);
     select(id);
   };
 
