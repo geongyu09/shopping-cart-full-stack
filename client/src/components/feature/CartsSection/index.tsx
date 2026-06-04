@@ -10,11 +10,13 @@ import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
 import useCartQuery from "@hooks/useCartQuery";
 import useCheckedItems from "@hooks/useCheckedItems";
+import useOrderConfirmNavigate from "@/hooks/useOrderConfirmNavigate";
 
 export default function CartsSection() {
   const { data } = useCartQuery();
   const { mutate: quantityMutate } = useCartQuantityUpdateMutation();
   const { mutate: deleteMutate } = useCartItemDeleteMutation();
+  const { navigate } = useOrderConfirmNavigate();
 
   const { checkedItems, select, unselect, unselectAll } =
     useCheckedItems<Product["id"]>();
@@ -28,6 +30,9 @@ export default function CartsSection() {
       acc + (checkedItems.includes(product.id) ? product.price * quantity : 0)
     );
   }, 0);
+
+  const deliveryFee = orderAmount >= 100000 ? 0 : 3000;
+  const totalAmount = orderAmount + deliveryFee;
 
   const handleSelectAll = () => {
     if (checkedItems.length === data.length) {
@@ -54,6 +59,13 @@ export default function CartsSection() {
     deleteMutate(id);
   };
 
+  const handleConfirm = () => {
+    navigate({
+      totalAmount,
+      products: data.filter(({ product }) => checkedItems.includes(product.id)),
+    });
+  };
+
   return (
     <ContentContainer>
       <Spacing size={2.25} />
@@ -70,7 +82,11 @@ export default function CartsSection() {
             onMinus={(id) => handleQuantityChange(id, "minus")}
             onDelete={handleDelete}
           />
-          <CartOrderAmount orderAmount={orderAmount} />
+          <CartOrderAmount
+            orderAmount={orderAmount}
+            deliveryFee={deliveryFee}
+            totalAmount={totalAmount}
+          />
           <Spacing size={7} />
         </>
       ) : (
@@ -79,7 +95,11 @@ export default function CartsSection() {
         </EmptyCartContainer>
       )}
       <PositionBottom>
-        <Button fullWidth disabled={checkedItems.length === 0}>
+        <Button
+          fullWidth
+          disabled={checkedItems.length === 0}
+          onClick={handleConfirm}
+        >
           주문 확인
         </Button>
       </PositionBottom>

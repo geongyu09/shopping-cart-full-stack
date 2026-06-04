@@ -1,15 +1,19 @@
-import styled from "@emotion/styled";
 import info from "@assets/info.svg";
-import Spacing from "@components/common/Spacing";
 import Divider from "@components/common/Divider";
+import Spacing from "@components/common/Spacing";
+import styled from "@emotion/styled";
 
 interface CartOrderAmountProps {
   orderAmount: number;
+  deliveryFee: number;
+  totalAmount: number;
 }
 
-export default function CartOrderAmount({ orderAmount }: CartOrderAmountProps) {
-  const deliveryFee = orderAmount >= 100000 ? 0 : 3000;
-
+export default function CartOrderAmount({
+  orderAmount,
+  deliveryFee,
+  totalAmount,
+}: CartOrderAmountProps) {
   return (
     <CartOrderAmountContainer>
       <OrderAmountInfoWrapper>
@@ -24,14 +28,14 @@ export default function CartOrderAmount({ orderAmount }: CartOrderAmountProps) {
       <CartOrderAmountInfoContainer>
         <CartOrderAmountInfoLabel>총 주문 금액</CartOrderAmountInfoLabel>
         <CartOrderAmountInfoValue>
-          {orderAmount?.toLocaleString()}원
+          {orderAmount.toLocaleString()}원
         </CartOrderAmountInfoValue>
       </CartOrderAmountInfoContainer>
       <Spacing size={0.5} />
       <CartOrderAmountInfoContainer>
         <CartOrderAmountInfoLabel>배송비</CartOrderAmountInfoLabel>
         <CartOrderAmountInfoValue>
-          {deliveryFee?.toLocaleString()}원
+          {deliveryFee.toLocaleString()}원
         </CartOrderAmountInfoValue>
       </CartOrderAmountInfoContainer>
       <Spacing size={0.75} />
@@ -40,11 +44,7 @@ export default function CartOrderAmount({ orderAmount }: CartOrderAmountProps) {
       <CartOrderAmountInfoContainer>
         <CartOrderAmountInfoLabel>총 결제 금액</CartOrderAmountInfoLabel>
         <CartOrderAmountInfoValue>
-          {(orderAmount && deliveryFee
-            ? orderAmount + deliveryFee
-            : 0
-          ).toLocaleString()}
-          원
+          {totalAmount.toLocaleString()}원
         </CartOrderAmountInfoValue>
       </CartOrderAmountInfoContainer>
     </CartOrderAmountContainer>

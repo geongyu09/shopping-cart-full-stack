@@ -1,13 +1,21 @@
 import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
 
-export default function OrderConfirmContent() {
+interface OrderConfirmContentProps {
+  productCount: number;
+  totalQuantity: number;
+}
+
+export default function OrderConfirmContent({
+  productCount,
+  totalQuantity,
+}: OrderConfirmContentProps) {
   return (
     <>
       <OrderConfirmHeading>주문 확인</OrderConfirmHeading>
       <Spacing size={1.5} />
       <OrderConfirmDescription>
-        총 2종류의 상품 4개를 주문합니다.
+        총 {productCount}종류의 상품 {totalQuantity}개를 주문합니다.
       </OrderConfirmDescription>
       <OrderConfirmDescription>
         최종 결제 금액을 확인해 주세요.

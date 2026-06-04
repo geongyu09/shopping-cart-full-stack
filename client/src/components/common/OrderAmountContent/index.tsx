@@ -1,12 +1,20 @@
 import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
 
-export default function OrderAmountContent() {
+interface OrderAmountContentProps {
+  totalAmount: number;
+}
+
+export default function OrderAmountContent({
+  totalAmount,
+}: OrderAmountContentProps) {
   return (
     <>
       <OrderAmountHeading>총 결제 금액</OrderAmountHeading>
       <Spacing size={0.75} />
-      <OrderAmountDescription>120,000원</OrderAmountDescription>
+      <OrderAmountDescription>
+        {totalAmount.toLocaleString()}원
+      </OrderAmountDescription>
     </>
   );
 }
