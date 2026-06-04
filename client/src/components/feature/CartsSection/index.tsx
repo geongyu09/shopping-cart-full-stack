@@ -71,6 +71,7 @@ export default function CartsSection() {
             onDelete={handleDelete}
           />
           <CartOrderAmount orderAmount={orderAmount} />
+          <Spacing size={7} />
         </>
       ) : (
         <EmptyCartContainer>

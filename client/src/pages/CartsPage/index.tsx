@@ -1,14 +1,12 @@
 import CartsSection from "@/components/feature/CartsSection";
 import Header from "@components/common/Header";
 import Logo from "@components/common/Logo";
-import Spacing from "@components/common/Spacing";
 
 export default function CartsPage() {
   return (
     <>
       <Header LeftComponent={<Logo />} />
       <CartsSection />
-      <Spacing size={7} />
     </>
   );
 }
