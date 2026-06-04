@@ -61,7 +61,7 @@ export default function CartsSection() {
   };
 
   const handleQuantityChange = (id: number, type: "plus" | "minus") => {
-    const target = data.find((d) => d.product.id === id);
+    const target = data.find(({ product }) => product.id === id);
     if (!target) return;
     const nextQuantity = target.quantity + (type === "plus" ? 1 : -1);
     quantityMutate(id, nextQuantity);
