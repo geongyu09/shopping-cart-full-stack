@@ -1,12 +1,15 @@
 import Header from "@components/common/Header";
 import Logo from "@components/common/Logo";
 import CartsSection from "@components/feature/CartsSection";
+import { Suspense } from "react";
 
 export default function CartsPage() {
   return (
     <>
       <Header LeftComponent={<Logo />} />
-      <CartsSection />
+      <Suspense fallback={<div>loading...</div>}>
+        <CartsSection />
+      </Suspense>
     </>
   );
 }
