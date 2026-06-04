@@ -1,3 +1,4 @@
+import useCartQuantityMutation from "@/hooks/useCartQuantityMutation";
 import type { Product } from "@/types/cartProduct";
 import Button from "@components/common/Button";
 import CartHeading from "@components/common/CartHeading";
@@ -11,6 +12,7 @@ import useCheckedItems from "@hooks/useCheckedItems";
 
 export default function CartsSection() {
   const { data } = useCartQuery();
+  const { mutate: quantityMutate } = useCartQuantityMutation();
 
   const { checkedItems, select, unselect, unselectAll } =
     useCheckedItems<Product["id"]>();
@@ -39,6 +41,13 @@ export default function CartsSection() {
     select(id);
   };
 
+  const handleQuantityChange = (id: number, type: "plus" | "minus") => {
+    const target = data.find((d) => d.product.id === id);
+    if (!target) return;
+    const nextQuantity = target.quantity + (type === "plus" ? 1 : -1);
+    quantityMutate(id, nextQuantity);
+  };
+
   return (
     <ContentContainer>
       <Spacing size={2.25} />
@@ -49,8 +58,8 @@ export default function CartsSection() {
         checkedItems={checkedItems}
         onSelectAll={handleSelectAll}
         onSelect={handleSelect}
-        onPlus={() => {}}
-        onMinus={() => {}}
+        onPlus={(id) => handleQuantityChange(id, "plus")}
+        onMinus={(id) => handleQuantityChange(id, "minus")}
         onDelete={() => {}}
       />
       <CartOrderAmount orderAmount={orderAmount} />
