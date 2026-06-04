@@ -1,7 +1,9 @@
 import { useState } from "react";
 
-export default function useCheckedItems<T>() {
-  const [checkedItems, setCheckedItems] = useState<T[]>([]);
+export default function useCheckedItems<T>(initialCheckedItems?: T[]) {
+  const [checkedItems, setCheckedItems] = useState<T[]>(
+    initialCheckedItems || [],
+  );
 
   const select = (item: T) => {
     setCheckedItems((prev) => [...prev, item]);
