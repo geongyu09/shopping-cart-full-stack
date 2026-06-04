@@ -3,7 +3,7 @@ import { queryStore } from "@/queries/instance";
 import useMutation from "@/queries/useMutation";
 import { CART_QUERY_KEY } from "./useCartQuery";
 
-export default function useCartQuantityMutation() {
+export default function useCartQuantityUpdateMutation() {
   return useMutation({
     mutateFn: patchCartQuantity,
     onSuccess: () => {

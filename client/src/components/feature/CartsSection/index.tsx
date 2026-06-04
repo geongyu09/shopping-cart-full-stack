@@ -1,4 +1,4 @@
-import useCartQuantityMutation from "@/hooks/useCartQuantityMutation";
+import useCartQuantityUpdateMutation from "@/hooks/useCartQuantityUpdateMutation";
 import type { Product } from "@/types/cartProduct";
 import Button from "@components/common/Button";
 import CartHeading from "@components/common/CartHeading";
@@ -12,7 +12,7 @@ import useCheckedItems from "@hooks/useCheckedItems";
 
 export default function CartsSection() {
   const { data } = useCartQuery();
-  const { mutate: quantityMutate } = useCartQuantityMutation();
+  const { mutate: quantityMutate } = useCartQuantityUpdateMutation();
 
   const { checkedItems, select, unselect, unselectAll } =
     useCheckedItems<Product["id"]>();
