@@ -1,5 +1,5 @@
+import Spacing from "@components/common/Spacing";
 import styled from "@emotion/styled";
-import Spacing from "../Spacing";
 
 export default function OrderAmountContent() {
   return (
