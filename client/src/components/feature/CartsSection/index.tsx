@@ -16,6 +16,12 @@ import {
   removeCheckedItemsFromLocalStorage,
   setCheckedItemsToLocalStorage,
 } from "./libs/localStorage";
+import {
+  calcDeliveryFee,
+  calcOrderAmount,
+  calcTotalAmount,
+  makeCheckedItem,
+} from "./libs/carts";
 
 export default function CartsSection() {
   const { data } = useCartQuery();
@@ -25,38 +31,36 @@ export default function CartsSection() {
 
   const initialCheckedItems =
     getCheckedItemsFromLocalStorage().length === 0
-      ? data.map(({ product }) => product.id)
+      ? makeCheckedItem(data)
       : getCheckedItemsFromLocalStorage();
 
   const { checkedItems, select, unselect, unselectAll } =
     useCheckedItems<Product["id"]>(initialCheckedItems);
 
-  const orderAmount = data.reduce((acc, { product, quantity }) => {
-    return (
-      acc + (checkedItems.includes(product.id) ? product.price * quantity : 0)
-    );
-  }, 0);
+  const orderAmount = calcOrderAmount(data, checkedItems);
+  const deliveryFee = calcDeliveryFee(orderAmount);
+  const totalAmount = calcTotalAmount(orderAmount, deliveryFee);
 
-  const deliveryFee = orderAmount >= 100000 ? 0 : 3000;
-  const totalAmount = orderAmount + deliveryFee;
+  const isAllChecked = checkedItems.length === data.length;
+  const isChecked = (id: number) => checkedItems.includes(id);
 
   const handleSelectAll = () => {
-    if (checkedItems.length === data.length) {
+    if (isAllChecked) {
       removeCheckedItemsFromLocalStorage();
       return unselectAll();
     }
 
-    setCheckedItemsToLocalStorage(data.map(({ product }) => product.id));
+    setCheckedItemsToLocalStorage(makeCheckedItem(data));
     data.forEach(({ product }) => select(product.id));
   };
 
   const handleSelect = (id: number) => {
-    if (checkedItems.includes(id)) {
+    if (isChecked(id)) {
       setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
       return unselect(id);
     }
 
-    setCheckedItemsToLocalStorage([...new Set([...checkedItems, id])]);
+    setCheckedItemsToLocalStorage([...checkedItems, id]);
     select(id);
   };
 
@@ -71,7 +75,7 @@ export default function CartsSection() {
   const handleConfirm = () => {
     navigate({
       totalAmount,
-      products: data.filter(({ product }) => checkedItems.includes(product.id)),
+      products: data.filter(({ product }) => isChecked(product.id)),
     });
   };
 
