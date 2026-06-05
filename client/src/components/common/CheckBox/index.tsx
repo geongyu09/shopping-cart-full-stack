@@ -16,6 +16,7 @@ const CheckBoxInput = styled.input`
   background-repeat: no-repeat;
   background-position: center;
   appearance: none;
+  cursor: pointer;
 
   :checked {
     background-color: ${COLOR_PALETTE.black};
