@@ -1,9 +1,12 @@
+import useGoBackNavigate from "@/hooks/useGoBackNavigate";
 import arrowLeft from "@assets/arrowLeft.svg";
 import styled from "@emotion/styled";
 
 export default function GoBackButton() {
+  const { navigate: goBack } = useGoBackNavigate();
+
   return (
-    <ButtonContainer>
+    <ButtonContainer onClick={goBack}>
       <ArrowLeftIcon src={arrowLeft} alt="뒤로가기" />
     </ButtonContainer>
   );

@@ -1,4 +1,4 @@
-import GoBackButton from "@components/common/shared/GoBackButton";
+import GoBackButton from "@components/feature/GoBackButton";
 import Header from "@components/common/shared/Header";
 import OrderConfirmSection from "@components/feature/OrderConfirmSection";
 
