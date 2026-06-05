@@ -3,6 +3,7 @@ import ErrorBoundary from "@components/common/shared/ErrorBoundary";
 import ErrorFallback from "@components/common/shared/ErrorFallback";
 import Header from "@components/common/shared/Header";
 import Logo from "@components/common/shared/Logo";
+import PageLayout from "@components/common/shared/PageLayout";
 import Spacing from "@components/common/shared/Spacing";
 import CartsSection from "@components/feature/CartsSection";
 import styled from "@emotion/styled";
@@ -10,7 +11,7 @@ import { Suspense } from "react";
 
 export default function CartsPage() {
   return (
-    <>
+    <PageLayout>
       <Header LeftComponent={<Logo />} />
       <ErrorBoundary fallback={<ErrorFallback />}>
         <Suspense
@@ -22,9 +23,10 @@ export default function CartsPage() {
           }
         >
           <CartsSection />
+          <Spacing size={7} />
         </Suspense>
       </ErrorBoundary>
-    </>
+    </PageLayout>
   );
 }
 

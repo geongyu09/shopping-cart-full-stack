@@ -96,7 +96,6 @@ export default function CartsSection() {
             deliveryFee={deliveryFee}
             totalAmount={totalAmount}
           />
-          <Spacing size={7} />
         </>
       ) : (
         <EmptyCartContainer>
