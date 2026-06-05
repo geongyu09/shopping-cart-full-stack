@@ -1,8 +1,8 @@
 import minus from "@assets/minus.svg";
 import plus from "@assets/plus.svg";
-import Spacing from "@components/common//Spacing";
-import CheckBox from "@components/common/CheckBox";
-import Divider from "@components/common/Divider";
+import Spacing from "@components/common/shared/Spacing";
+import CheckBox from "@components/common/shared/CheckBox";
+import Divider from "@components/common/shared/Divider";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 

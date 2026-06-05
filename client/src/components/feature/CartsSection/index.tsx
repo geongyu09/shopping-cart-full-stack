@@ -1,21 +1,21 @@
-import useCartQuantityUpdateMutation from "@hooks/useCartQuantityUpdateMutation";
-import useCartItemDeleteMutation from "@hooks/useCartItemDeleteMutation";
+import CartHeading from "@components/common/entities/CartHeading";
+import CartList from "@components/common/entities/CartList";
+import CartOrderAmount from "@components/common/entities/CartOrderAmount";
+import Button from "@components/common/shared/Button";
+import PositionBottom from "@components/common/shared/PositionBottom";
+import useOrderConfirmNavigate from "@/hooks/useOrderConfirmNavigate";
 import type { Product } from "@/types/cartProduct";
-import Button from "@components/common/Button";
-import CartHeading from "@components/common/CartHeading";
-import CartList from "@components/common/CartList";
-import CartOrderAmount from "@components/common/CartOrderAmount";
-import PositionBottom from "@components/common/PositionBottom";
-import Spacing from "@components/common/Spacing";
+import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
+import useCartItemDeleteMutation from "@hooks/useCartItemDeleteMutation";
+import useCartQuantityUpdateMutation from "@hooks/useCartQuantityUpdateMutation";
 import useCartQuery from "@hooks/useCartQuery";
 import useCheckedItems from "@hooks/useCheckedItems";
-import useOrderConfirmNavigate from "@/hooks/useOrderConfirmNavigate";
 import {
   getCheckedItemsFromLocalStorage,
   removeCheckedItemsFromLocalStorage,
   setCheckedItemsToLocalStorage,
-} from "./libs/localstorage";
+} from "./libs/localStorage";
 
 export default function CartsSection() {
   const { data } = useCartQuery();

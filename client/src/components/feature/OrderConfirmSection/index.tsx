@@ -1,8 +1,8 @@
-import Button from "@components/common/Button";
-import OrderAmountContent from "@components/common/OrderAmountContent";
-import OrderConfirmContent from "@components/common/OrderConfirmContent";
-import PositionBottom from "@components/common/PositionBottom";
-import Spacing from "@components/common/Spacing";
+import OrderAmountContent from "@components/common/entities/OrderAmountContent";
+import OrderConfirmContent from "@components/common/entities/OrderConfirmContent";
+import Button from "@components/common/shared/Button";
+import PositionBottom from "@components/common/shared/PositionBottom";
+import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 import useOrderConfirmNavigate from "@hooks/useOrderConfirmNavigate";
 

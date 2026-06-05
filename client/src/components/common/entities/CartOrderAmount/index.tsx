@@ -1,6 +1,6 @@
+import Divider from "@components/common/shared/Divider";
 import info from "@assets/info.svg";
-import Divider from "@components/common/Divider";
-import Spacing from "@components/common/Spacing";
+import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 
 interface CartOrderAmountProps {

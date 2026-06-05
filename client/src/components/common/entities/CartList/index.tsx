@@ -1,7 +1,7 @@
+import CartItem from "@components/common/entities/CartItem";
+import CheckBox from "@components/common/shared/CheckBox";
 import type { Cart, Product } from "@/types/cartProduct";
-import CartItem from "@components/common/CartItem";
-import CheckBox from "@components/common/CheckBox";
-import Spacing from "@components/common/Spacing";
+import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 
 interface CartListProps {

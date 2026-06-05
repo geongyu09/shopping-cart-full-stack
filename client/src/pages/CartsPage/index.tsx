@@ -1,5 +1,5 @@
-import Header from "@components/common/Header";
-import Logo from "@components/common/Logo";
+import Header from "@components/common/shared/Header";
+import Logo from "@components/common/shared/Logo";
 import CartsSection from "@components/feature/CartsSection";
 import { Suspense } from "react";
 
