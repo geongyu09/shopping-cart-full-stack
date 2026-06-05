@@ -4,4 +4,6 @@ export const COLOR_PALETTE = {
   border: "#0000001A",
   disabled: "#BEBEBE",
   "image-placeholder": "#DCE3EA",
+  "skeleton-base": "#E5E9EE",
+  "skeleton-highlight": "#F2F4F7",
 };
