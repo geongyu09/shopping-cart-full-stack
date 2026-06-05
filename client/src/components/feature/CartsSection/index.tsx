@@ -70,6 +70,8 @@ export default function CartsSection() {
 
   const handleDelete = (id: number) => {
     deleteMutate(id);
+    setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
+    unselect(id);
   };
 
   const handleConfirm = () => {

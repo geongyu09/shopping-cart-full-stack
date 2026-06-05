@@ -9,7 +9,7 @@ interface CartListSkeletonProps {
 
 export default function CartListSkeleton({ count = 3 }: CartListSkeletonProps) {
   return (
-    <CartListSkeletonContainer>
+    <CartListSkeletonContainer data-testid="cart-list-skeleton">
       <SelectAllWrapper>
         <Skeleton width="1.25rem" height="1.25rem" borderRadius="0.25rem" />
         <Skeleton width="4rem" height="0.9375rem" />
