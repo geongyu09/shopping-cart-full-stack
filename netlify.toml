@@ -1,0 +1,17 @@
+# Netlify 배포 설정 (프론트엔드 client 디렉터리)
+
+[build]
+  # 모노레포: client 디렉터리에서 빌드를 실행한다.
+  base = "client"
+  # tsc -b 타입체크 후 vite build 실행 → dist/ 생성
+  command = "npm run build"
+  # 정적 결과물 위치 (저장소 루트 기준)
+  publish = "client/dist"
+
+# SPA(react-router) 라우팅 대응:
+# /carts, /order-confirm 등 새로고침 시 404가 나지 않도록
+# 모든 경로를 index.html로 보내 클라이언트 라우터가 처리하게 한다.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
