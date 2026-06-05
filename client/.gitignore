@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Env files (예시 파일은 추적)
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
