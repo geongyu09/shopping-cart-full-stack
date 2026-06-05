@@ -60,11 +60,8 @@ export default function CartsSection() {
     select(id);
   };
 
-  const handleQuantityChange = (id: number, type: "plus" | "minus") => {
-    const target = data.find(({ product }) => product.id === id);
-    if (!target) return;
-    const nextQuantity = target.quantity + (type === "plus" ? 1 : -1);
-    quantityMutate(id, nextQuantity);
+  const handleQuantityChange = (id: number, quantity: number) => {
+    quantityMutate(id, quantity);
   };
 
   const handleDelete = (id: number) => {
@@ -90,8 +87,8 @@ export default function CartsSection() {
             checkedItems={checkedItems}
             onSelectAll={handleSelectAll}
             onSelect={handleSelect}
-            onPlus={(id) => handleQuantityChange(id, "plus")}
-            onMinus={(id) => handleQuantityChange(id, "minus")}
+            quantityRange={{min:1, max:99}}
+            onChangeQuantity={handleQuantityChange}
             onDelete={handleDelete}
           />
           <CartOrderAmount

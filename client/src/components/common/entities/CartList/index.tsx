@@ -3,14 +3,15 @@ import CheckBox from "@components/common/shared/CheckBox";
 import type { Cart, Product } from "@/types/cartProduct";
 import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
+import type { QuantityRange } from "@/types/cartProduct";
 
 interface CartListProps {
   cartProducts: Cart[];
   checkedItems: Product["id"][];
   onSelectAll: () => void;
   onSelect: (id: Product["id"]) => void;
-  onPlus: (id: Product["id"]) => void;
-  onMinus: (id: Product["id"]) => void;
+  quantityRange: QuantityRange;
+  onChangeQuantity: (id: Product["id"], quantity: number) => void;
   onDelete: (id: Product["id"]) => void;
 }
 
@@ -18,8 +19,8 @@ export default function CartList({
   cartProducts,
   checkedItems,
   onDelete,
-  onMinus,
-  onPlus,
+  quantityRange,
+  onChangeQuantity,
   onSelect,
   onSelectAll,
 }: CartListProps) {
@@ -41,9 +42,11 @@ export default function CartList({
             quantity={quantity}
             checked={checkedItems.includes(product.id)}
             onSelect={() => onSelect(product.id)}
-            onPlus={() => onPlus(product.id)}
-            onMinus={() => onMinus(product.id)}
             onDelete={() => onDelete(product.id)}
+            quantityRange={quantityRange}
+            onChangeQuantity={(newQuantity) =>
+              onChangeQuantity(product.id, newQuantity)
+            }
           />
         ))}
       </CartListWrapper>

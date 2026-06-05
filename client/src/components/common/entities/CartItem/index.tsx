@@ -6,16 +6,21 @@ import Divider from "@components/common/shared/Divider";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 
+interface QuantityRange {
+  min: number;
+  max: number;
+}
+
 interface CartItemProps {
   name: string;
   image: string;
   price: number;
   quantity: number;
   checked: boolean;
+  quantityRange: QuantityRange;
   onSelect: () => void;
-  onPlus: () => void;
-  onMinus: () => void;
   onDelete: () => void;
+  onChangeQuantity: (quantity: number) => void;
 }
 
 export default function CartItem({
@@ -25,9 +30,9 @@ export default function CartItem({
   quantity,
   checked,
   onSelect,
-  onPlus,
-  onMinus,
   onDelete,
+  quantityRange,
+  onChangeQuantity,
 }: CartItemProps) {
   return (
     <CartItemContainer>
@@ -46,9 +51,17 @@ export default function CartItem({
             <CartItemPrice>{price.toLocaleString()}원</CartItemPrice>
           </ProductInfoWrapper>
           <QuantityWrapper>
-            <QuantityButton src={minus} onClick={onMinus} />
+            <QuantityButton
+              src={minus}
+              disabled={quantity <= quantityRange.min}
+              onClick={() => onChangeQuantity(Math.max(1, quantity - 1))}
+            />
             <Quantity>{quantity}</Quantity>
-            <QuantityButton src={plus} onClick={onPlus} />
+            <QuantityButton
+              src={plus}
+              disabled={quantity >= quantityRange.max}
+              onClick={() => onChangeQuantity(quantity + 1)}
+            />
           </QuantityWrapper>
         </CartItemInfoWrapper>
       </CartItemInfoContainer>
@@ -137,6 +150,10 @@ const QuantityButton = styled.button<{ src: string }>`
 
   :active {
     background-color: ${COLOR_PALETTE.border};
+  }
+
+  :disabled {
+    opacity: 0.2;
   }
 `;
 

@@ -9,3 +9,8 @@ export interface Cart {
   product: Product;
   quantity: number;
 }
+
+export interface QuantityRange {
+  min: number;
+  max: number;
+}

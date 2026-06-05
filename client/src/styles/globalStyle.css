@@ -43,6 +43,7 @@ button {
 
 button:disabled {
   cursor: default;
+  pointer-events: none;
 }
 
 a {
