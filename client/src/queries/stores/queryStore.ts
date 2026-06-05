@@ -46,7 +46,7 @@ export default class QueryStore {
   }
 
   setError(key: string, error: unknown) {
-    this.queryCache.set(key, error);
+    this.errorCache.set(key, error as Error);
     this.listeners.get(key)?.forEach((callback) => callback());
   }
 
