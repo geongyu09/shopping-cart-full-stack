@@ -1,16 +1,16 @@
+import type { Product } from "@/types/cartProduct";
 import CartHeading from "@components/common/entities/CartHeading";
 import CartList from "@components/common/entities/CartList";
 import CartOrderAmount from "@components/common/entities/CartOrderAmount";
 import Button from "@components/common/shared/Button";
 import PositionBottom from "@components/common/shared/PositionBottom";
-import useOrderConfirmNavigate from "@/hooks/useOrderConfirmNavigate";
-import type { Product } from "@/types/cartProduct";
 import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 import useCartItemDeleteMutation from "@hooks/useCartItemDeleteMutation";
 import useCartQuantityUpdateMutation from "@hooks/useCartQuantityUpdateMutation";
 import useCartQuery from "@hooks/useCartQuery";
 import useCheckedItems from "@hooks/useCheckedItems";
+import useOrderConfirmNavigate from "@hooks/useOrderConfirmNavigate";
 import {
   getCheckedItemsFromLocalStorage,
   removeCheckedItemsFromLocalStorage,
@@ -87,7 +87,7 @@ export default function CartsSection() {
             checkedItems={checkedItems}
             onSelectAll={handleSelectAll}
             onSelect={handleSelect}
-            quantityRange={{min:1, max:99}}
+            quantityRange={{ min: 1, max: 99 }}
             onChangeQuantity={handleQuantityChange}
             onDelete={handleDelete}
           />
