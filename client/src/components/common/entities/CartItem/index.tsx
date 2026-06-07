@@ -1,11 +1,11 @@
-import type { QuantityRange } from "@/types/cartProduct";
 import minus from "@assets/minus.svg";
 import plus from "@assets/plus.svg";
+import Spacing from "@components/common/shared/Spacing";
 import CheckBox from "@components/common/shared/CheckBox";
 import Divider from "@components/common/shared/Divider";
-import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
+import type { QuantityRange } from "@/types/cartProduct";
 
 interface CartItemProps {
   name: string;
@@ -50,13 +50,17 @@ export default function CartItem({
             <QuantityButton
               src={minus}
               disabled={quantity <= quantityRange.min}
-              onClick={() => onChangeQuantity(Math.max(1, quantity - 1))}
+              onClick={() =>
+                onChangeQuantity(Math.max(quantityRange.min, quantity - 1))
+              }
             />
             <Quantity>{quantity}</Quantity>
             <QuantityButton
               src={plus}
               disabled={quantity >= quantityRange.max}
-              onClick={() => onChangeQuantity(quantity + 1)}
+              onClick={() =>
+                onChangeQuantity(Math.min(quantityRange.max, quantity + 1))
+              }
             />
           </QuantityWrapper>
         </CartItemInfoWrapper>
