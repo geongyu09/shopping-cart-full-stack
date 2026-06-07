@@ -1,15 +1,11 @@
+import type { QuantityRange } from "@/types/cartProduct";
 import minus from "@assets/minus.svg";
 import plus from "@assets/plus.svg";
-import Spacing from "@components/common/shared/Spacing";
 import CheckBox from "@components/common/shared/CheckBox";
 import Divider from "@components/common/shared/Divider";
+import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
-
-interface QuantityRange {
-  min: number;
-  max: number;
-}
 
 interface CartItemProps {
   name: string;
