@@ -1,4 +1,3 @@
-import CartListSkeleton from "@/components/common/entities/CartList/skeleton";
 import ErrorBoundary from "@components/common/shared/ErrorBoundary";
 import ErrorFallback from "@components/common/shared/ErrorFallback";
 import Header from "@components/common/shared/Header";
@@ -13,26 +12,23 @@ export default function CartsPage() {
   return (
     <PageLayout>
       <Header LeftComponent={<Logo />} />
-      <ErrorBoundary fallback={<ErrorFallback />}>
-        <Suspense
-          fallback={
-            <SkeletonWrapper>
-              <Spacing size={2.25} />
-              <CartListSkeleton />
-            </SkeletonWrapper>
-          }
-        >
-          <CartsSection />
-          <Spacing size={7} />
-        </Suspense>
-      </ErrorBoundary>
+      <ContentArea>
+        <ErrorBoundary fallback={<ErrorFallback />}>
+          <Suspense fallback={<CartsSection.Skeleton />}>
+            <CartsSection />
+            <Spacing size={7} />
+          </Suspense>
+        </ErrorBoundary>
+      </ContentArea>
     </PageLayout>
   );
 }
 
-const SkeletonWrapper = styled.div`
+const ContentArea = styled.div`
   width: 100%;
   padding-inline: 1.5rem;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  overflow: auto;
 `;

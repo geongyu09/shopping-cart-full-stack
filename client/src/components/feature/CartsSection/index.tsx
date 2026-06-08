@@ -20,13 +20,15 @@ import {
 } from "./libs/carts";
 import {
   getCheckedItemsFromLocalStorage,
-  removeCheckedItemsFromLocalStorage,
+  // removeCheckedItemsFromLocalStorage,
   setCheckedItemsToLocalStorage,
 } from "./libs/localStorage";
 import Divider from "@components/common/shared/Divider";
 import { COLOR_PALETTE } from "@styles/colorPalette";
+import { useEffect } from "react";
+import CartsSectionSkeleton from "./skeleton";
 
-export default function CartsSection() {
+function CartsSection() {
   const { data: cartData } = useCartQuery();
   const { mutate: quantityMutate } = useCartQuantityUpdateMutation();
   const { mutate: deleteMutate } = useCartItemDeleteMutation();
@@ -48,21 +50,21 @@ export default function CartsSection() {
 
   const handleSelectAll = () => {
     if (isAllChecked) {
-      removeCheckedItemsFromLocalStorage();
+      // removeCheckedItemsFromLocalStorage();
       return unselectAll();
     }
 
-    setCheckedItemsToLocalStorage(makeCheckedItem(cartData));
+    // setCheckedItemsToLocalStorage(makeCheckedItem(cartData));
     cartData.forEach(({ product }) => select(product.id));
   };
 
   const handleSelect = (id: number) => {
     if (isChecked(id)) {
-      setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
+      // setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
       return unselect(id);
     }
 
-    setCheckedItemsToLocalStorage([...checkedItems, id]);
+    // setCheckedItemsToLocalStorage([...checkedItems, id]);
     select(id);
   };
 
@@ -72,7 +74,7 @@ export default function CartsSection() {
 
   const handleDelete = (id: number) => {
     deleteMutate(id);
-    setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
+    // setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
     unselect(id);
   };
 
@@ -82,6 +84,10 @@ export default function CartsSection() {
       products: cartData.filter(({ product }) => isChecked(product.id)),
     });
   };
+
+  useEffect(() => {
+    setCheckedItemsToLocalStorage(makeCheckedItem(cartData));
+  }, [cartData]);
 
   return (
     <ContentContainer>
@@ -156,13 +162,14 @@ export default function CartsSection() {
   );
 }
 
+CartsSection.Skeleton = CartsSectionSkeleton;
+
+export default CartsSection;
+
 const ContentContainer = styled.section`
-  width: 100%;
-  padding-inline: 1.5rem;
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: auto;
 `;
 
 const EmptyCartContainer = styled.div`
@@ -219,3 +226,5 @@ const DeleteButton = styled.button`
     background-color: ${COLOR_PALETTE.border};
   }
 `;
+
+CartsSection.Skeleton = CartsSectionSkeleton;

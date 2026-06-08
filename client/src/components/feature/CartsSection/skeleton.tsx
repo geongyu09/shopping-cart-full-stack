@@ -12,8 +12,14 @@ export default function CartsSectionSkeleton({
 }: CartsSectionSkeletonProps) {
   return (
     <CartsSectionSkeletonContainer data-testid="cart-list-skeleton">
+      <Spacing size={2.25} />
+      <CartHeadingSkeleton>
+        <Skeleton width="6rem" height="1.5rem" />
+        <Skeleton width="12rem" height="0.9375rem" />
+      </CartHeadingSkeleton>
+      <Spacing size={2.25} />
       <SelectAllWrapper>
-        <Skeleton width="1.25rem" height="1.25rem" borderRadius="0.25rem" />
+        <Skeleton width="1.5rem" height="1.5rem" borderRadius="0.5rem" />
         <Skeleton width="4rem" height="0.9375rem" />
       </SelectAllWrapper>
       <Spacing size={1.25} />
@@ -23,11 +29,7 @@ export default function CartsSectionSkeleton({
             <Divider />
             <Spacing size={0.75} />
             <ActionButtonWrapper>
-              <Skeleton
-                width="1.25rem"
-                height="1.25rem"
-                borderRadius="0.25rem"
-              />
+              <Skeleton width="1.5rem" height="1.5rem" borderRadius="0.5rem" />
               <Skeleton
                 width="2.75rem"
                 height="1.5rem"
@@ -67,6 +69,12 @@ export default function CartsSectionSkeleton({
 const CartsSectionSkeletonContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const CartHeadingSkeleton = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 `;
 
 const SelectAllWrapper = styled.div`
