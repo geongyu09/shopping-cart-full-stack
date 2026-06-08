@@ -35,10 +35,14 @@ function CartsSection() {
   const { mutate: deleteMutate } = useCartItemDeleteMutation();
   const { navigate: goOrderConfirm } = useOrderConfirmNavigate();
 
+  const storedCheckedItems = getCheckedItemsFromLocalStorage().filter((id) =>
+    cartData.some(({ product }) => product.id === id),
+  );
+
   const initialCheckedItems =
-    getCheckedItemsFromLocalStorage().length === 0
+    storedCheckedItems.length === 0
       ? makeCheckedItem(cartData)
-      : getCheckedItemsFromLocalStorage();
+      : storedCheckedItems;
 
   const { checkedItems, select, unselect, unselectAll } =
     useCheckedItems<Product["id"]>(initialCheckedItems);
@@ -46,26 +50,20 @@ function CartsSection() {
   const orderAmount = calcOrderAmount(cartData, checkedItems);
   const deliveryFee = calcDeliveryFee(orderAmount);
   const totalAmount = calcTotalAmount(orderAmount, deliveryFee);
-  const isAllChecked = checkedItems.length === cartData.length;
+  const isAllChecked = cartData.every(({ product }) =>
+    checkedItems.includes(product.id),
+  );
   const isChecked = (id: number) => checkedItems.includes(id);
 
   const handleSelectAll = () => {
-    if (isAllChecked) {
-      // removeCheckedItemsFromLocalStorage();
-      return unselectAll();
-    }
+    if (isAllChecked) return unselectAll();
 
-    // setCheckedItemsToLocalStorage(makeCheckedItem(cartData));
     cartData.forEach(({ product }) => select(product.id));
   };
 
   const handleSelect = (id: number) => {
-    if (isChecked(id)) {
-      // setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
-      return unselect(id);
-    }
+    if (isChecked(id)) return unselect(id);
 
-    // setCheckedItemsToLocalStorage([...checkedItems, id]);
     select(id);
   };
 
