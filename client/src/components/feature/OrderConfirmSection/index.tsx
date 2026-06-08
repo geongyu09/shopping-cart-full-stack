@@ -15,7 +15,11 @@ export default function OrderConfirmSection() {
   const state = getState();
 
   if (!state) {
-    return null;
+    return (
+      <ContentContainer>
+        <p>잘못된 접근입니다.</p>
+      </ContentContainer>
+    );
   }
 
   const { products, totalAmount } = state;
