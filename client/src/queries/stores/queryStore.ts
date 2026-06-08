@@ -33,6 +33,9 @@ export default class QueryStore {
       .catch((error) => {
         this.setError(key, error);
         throw error;
+      })
+      .finally(() => {
+        this.promiseCache.delete(key);
       });
 
     this.promiseCache.set(key, promise);
