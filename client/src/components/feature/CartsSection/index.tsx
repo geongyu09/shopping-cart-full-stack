@@ -20,8 +20,9 @@ import {
 } from "./libs/carts";
 import {
   getCheckedItemsFromLocalStorage,
+  replaceCheckedItemsInLocalStorage,
   // removeCheckedItemsFromLocalStorage,
-  setCheckedItemsToLocalStorage,
+  // setCheckedItemsToLocalStorage,
 } from "./libs/localStorage";
 import Divider from "@components/common/shared/Divider";
 import { COLOR_PALETTE } from "@styles/colorPalette";
@@ -74,7 +75,6 @@ function CartsSection() {
 
   const handleDelete = (id: number) => {
     deleteMutate(id);
-    // setCheckedItemsToLocalStorage(checkedItems.filter((item) => item !== id));
     unselect(id);
   };
 
@@ -85,9 +85,12 @@ function CartsSection() {
     });
   };
 
-  useEffect(() => {
-    setCheckedItemsToLocalStorage(makeCheckedItem(cartData));
-  }, [cartData]);
+  useEffect(
+    function updateCheckedItemsInLocalStorage() {
+      replaceCheckedItemsInLocalStorage(checkedItems);
+    },
+    [checkedItems, cartData],
+  );
 
   return (
     <ContentContainer>

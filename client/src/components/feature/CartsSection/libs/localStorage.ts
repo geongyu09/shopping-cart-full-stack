@@ -20,3 +20,10 @@ export const setCheckedItemsToLocalStorage = (
 export const removeCheckedItemsFromLocalStorage = () => {
   removeItemsFromLocalStorage("checkedItems");
 };
+
+export const replaceCheckedItemsInLocalStorage = (
+  checkedItems: Product["id"][],
+) => {
+  removeCheckedItemsFromLocalStorage();
+  setCheckedItemsToLocalStorage(checkedItems);
+};
