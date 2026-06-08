@@ -1,21 +1,15 @@
+import type { QuantityRange } from "@/types/cartProduct";
 import minus from "@assets/minus.svg";
 import plus from "@assets/plus.svg";
-import Spacing from "@components/common/shared/Spacing";
-import CheckBox from "@components/common/shared/CheckBox";
-import Divider from "@components/common/shared/Divider";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
-import type { QuantityRange } from "@/types/cartProduct";
 
 interface CartItemProps {
   name: string;
   image: string;
   price: number;
   quantity: number;
-  checked: boolean;
   quantityRange: QuantityRange;
-  onSelect: () => void;
-  onDelete: () => void;
   onChangeQuantity: (quantity: number) => void;
 }
 
@@ -24,72 +18,38 @@ export default function CartItem({
   image,
   price,
   quantity,
-  checked,
-  onSelect,
-  onDelete,
   quantityRange,
   onChangeQuantity,
 }: CartItemProps) {
   return (
-    <CartItemContainer>
-      <Divider />
-      <Spacing size={0.75} />
-      <ActionButtonWrapper>
-        <CheckBox checked={checked} onChange={onSelect} />
-        <DeleteButton onClick={onDelete}>삭제</DeleteButton>
-      </ActionButtonWrapper>
-      <Spacing size={0.75} />
-      <CartItemInfoContainer>
-        <CartItemImg src={image} alt={name} />
-        <CartItemInfoWrapper>
-          <ProductInfoWrapper>
-            <CartItemName>{name}</CartItemName>
-            <CartItemPrice>{price.toLocaleString()}원</CartItemPrice>
-          </ProductInfoWrapper>
-          <QuantityWrapper>
-            <QuantityButton
-              src={minus}
-              disabled={quantity <= quantityRange.min}
-              onClick={() =>
-                onChangeQuantity(Math.max(quantityRange.min, quantity - 1))
-              }
-            />
-            <Quantity>{quantity}</Quantity>
-            <QuantityButton
-              src={plus}
-              disabled={quantity >= quantityRange.max}
-              onClick={() =>
-                onChangeQuantity(Math.min(quantityRange.max, quantity + 1))
-              }
-            />
-          </QuantityWrapper>
-        </CartItemInfoWrapper>
-      </CartItemInfoContainer>
-    </CartItemContainer>
+    <CartItemInfoContainer>
+      <CartItemImg src={image} alt={name} />
+      <CartItemInfoWrapper>
+        <ProductInfoWrapper>
+          <CartItemName>{name}</CartItemName>
+          <CartItemPrice>{price.toLocaleString()}원</CartItemPrice>
+        </ProductInfoWrapper>
+        <QuantityWrapper>
+          <QuantityButton
+            src={minus}
+            disabled={quantity <= quantityRange.min}
+            onClick={() =>
+              onChangeQuantity(Math.max(quantityRange.min, quantity - 1))
+            }
+          />
+          <Quantity>{quantity}</Quantity>
+          <QuantityButton
+            src={plus}
+            disabled={quantity >= quantityRange.max}
+            onClick={() =>
+              onChangeQuantity(Math.min(quantityRange.max, quantity + 1))
+            }
+          />
+        </QuantityWrapper>
+      </CartItemInfoWrapper>
+    </CartItemInfoContainer>
   );
 }
-
-const CartItemContainer = styled.li``;
-
-const ActionButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const DeleteButton = styled.button`
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid ${COLOR_PALETTE.border};
-  background-color: ${COLOR_PALETTE.white};
-  font-weight: 500;
-  font-size: 0.75rem;
-  line-height: 0.9375rem;
-
-  :active {
-    background-color: ${COLOR_PALETTE.border};
-  }
-`;
 
 const CartItemInfoContainer = styled.div`
   display: flex;

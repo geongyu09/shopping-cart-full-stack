@@ -3,13 +3,15 @@ import Skeleton from "@components/common/shared/Skeleton";
 import Spacing from "@components/common/shared/Spacing";
 import styled from "@emotion/styled";
 
-interface CartListSkeletonProps {
+interface CartsSectionSkeletonProps {
   count?: number;
 }
 
-export default function CartListSkeleton({ count = 3 }: CartListSkeletonProps) {
+export default function CartsSectionSkeleton({
+  count = 3,
+}: CartsSectionSkeletonProps) {
   return (
-    <CartListSkeletonContainer data-testid="cart-list-skeleton">
+    <CartsSectionSkeletonContainer data-testid="cart-list-skeleton">
       <SelectAllWrapper>
         <Skeleton width="1.25rem" height="1.25rem" borderRadius="0.25rem" />
         <Skeleton width="4rem" height="0.9375rem" />
@@ -58,11 +60,11 @@ export default function CartListSkeleton({ count = 3 }: CartListSkeletonProps) {
           </CartItemSkeleton>
         ))}
       </CartItemSkeletonList>
-    </CartListSkeletonContainer>
+    </CartsSectionSkeletonContainer>
   );
 }
 
-const CartListSkeletonContainer = styled.div`
+const CartsSectionSkeletonContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
