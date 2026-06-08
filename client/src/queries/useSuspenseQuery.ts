@@ -21,7 +21,5 @@ export default function useSuspenseQuery<T>({
   if (error) throw error;
   if (!data) throw queryStore.fetch(key, queryFn);
 
-  const isLoading = data === undefined && error === null;
-
-  return { data, isLoading, error };
+  return { data, error };
 }
