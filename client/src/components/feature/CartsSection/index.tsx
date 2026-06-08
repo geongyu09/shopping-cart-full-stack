@@ -108,7 +108,7 @@ function CartsSection() {
             <Spacing size={1.25} />
             <CartListWrapper>
               {cartData.map(({ product, quantity }) => (
-                <CartItemContainer>
+                <CartItemContainer key={product.id}>
                   <Divider />
                   <Spacing size={0.75} />
                   <ActionButtonWrapper>
@@ -122,7 +122,6 @@ function CartsSection() {
                   </ActionButtonWrapper>
                   <Spacing size={0.75} />
                   <CartItem
-                    key={product.id}
                     {...product}
                     quantity={quantity}
                     quantityRange={{ min: 1, max: 99 }}
@@ -227,5 +226,3 @@ const DeleteButton = styled.button`
     background-color: ${COLOR_PALETTE.border};
   }
 `;
-
-CartsSection.Skeleton = CartsSectionSkeleton;
