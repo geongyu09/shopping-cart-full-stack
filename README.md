@@ -4,7 +4,7 @@
 
 - [step1 요구사항 문서](./docs/REQUIREMENTS.md)
 - [step2 요구사항 문서](./client/docs/REQUIREMENTS.md)
-- [step3 요구사항 문서](./docs/step3-REQUIREMENTS.md)
+- [step3 요구사항 문서](./docs/system-design.md)
 
 ---
 
