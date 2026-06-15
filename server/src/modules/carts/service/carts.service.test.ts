@@ -1,23 +1,27 @@
 import ERROR_CODES from "@/ERROR_CODE";
-import {
-  changeCartQuantity,
-  deleteCartsProduct,
-  getCarts,
-  removeCartItemByProductId,
-} from "./carts.service";
-import {
-  deleteCartQuery,
-  getCartItemByProductIdQuery,
-  getCartsQuery,
-  updateCartQuantityQuery,
-} from "./carts.repository";
+import { CartsService } from "./carts.service";
+import type { CartRepository } from "../repository/carts.repository";
 
-jest.mock("./carts.repository");
+const getCartsQueryMock = jest.fn();
+const getCartItemByProductIdQueryMock = jest.fn();
+const updateCartQuantityQueryMock = jest.fn();
+const deleteCartQueryMock = jest.fn();
 
-const getCartsQueryMock = jest.mocked(getCartsQuery);
-const getCartItemByProductIdQueryMock = jest.mocked(getCartItemByProductIdQuery);
-const updateCartQuantityQueryMock = jest.mocked(updateCartQuantityQuery);
-const deleteCartQueryMock = jest.mocked(deleteCartQuery);
+const mockCartRepository: CartRepository = {
+  getCarts: getCartsQueryMock,
+  getCartItemByProductId: getCartItemByProductIdQueryMock,
+  updateCartQuantity: updateCartQuantityQueryMock,
+  deleteCart: deleteCartQueryMock,
+};
+
+const cartsService = new CartsService(mockCartRepository);
+
+const getCarts = () => cartsService.getCarts();
+const changeCartQuantity = (id: number, quantity: number) =>
+  cartsService.changeCartQuantity(id, quantity);
+const deleteCartsProduct = (id: number) => cartsService.deleteCartsProduct(id);
+const removeCartItemByProductId = (productId: number) =>
+  cartsService.removeCartItemByProductId(productId);
 
 describe("carts.service", () => {
   beforeEach(() => {

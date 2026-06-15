@@ -8,7 +8,7 @@ import {
 } from "./products.repository";
 import ERROR_CODES from "../../ERROR_CODE";
 import createAppError from "@/errors/AppError";
-import { removeCartItemByProductId } from "../carts/carts.service";
+import { removeCartItemByProductId } from "../carts/service/carts.service";
 
 export const getAllProducts = () => {
   return getAllProductsQuery();

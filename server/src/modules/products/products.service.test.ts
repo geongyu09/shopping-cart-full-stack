@@ -5,7 +5,7 @@ import {
   getProductByIdQuery,
   getProductByNameQuery,
 } from "./products.repository";
-import { removeCartItemByProductId } from "../carts/carts.service";
+import { removeCartItemByProductId } from "../carts/service/carts.service";
 import { addProduct, deleteProduct, getAllProducts } from "./products.service";
 import ERROR_CODES from "../../ERROR_CODE";
 
