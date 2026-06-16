@@ -1,4 +1,4 @@
-import ERROR_CODES from "../../ERROR_CODE";
+import ERROR_CODES from "@/ERROR_CODE";
 import createAppError from "@/errors/AppError";
 
 export interface CreateProductRequest {

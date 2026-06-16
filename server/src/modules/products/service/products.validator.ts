@@ -1,6 +1,6 @@
-import ERROR_CODES from "../../ERROR_CODE";
+import ERROR_CODES from "@/ERROR_CODE";
 import createAppError from "@/errors/AppError";
-import { checkIsProduct, CreateProductRequest } from "./products.schema";
+import { CreateProductRequest } from "../schema/products.schema";
 
 // 비즈니스 유효성 검사
 export const validateProductRules = (arg: CreateProductRequest) => {

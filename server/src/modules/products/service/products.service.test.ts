@@ -1,23 +1,35 @@
-import {
-  addProductQuery,
-  deleteProductQuery,
-  getAllProductsQuery,
-  getProductByIdQuery,
-  getProductByNameQuery,
-} from "./products.repository";
-import { removeCartItemByProductId } from "../carts/service/carts.service";
-import { addProduct, deleteProduct, getAllProducts } from "./products.service";
-import ERROR_CODES from "../../ERROR_CODE";
+import ERROR_CODES from "@/ERROR_CODE";
+import { ProductsService } from "./products.service";
+import type { ProductRepository } from "../repository/products.repository";
 
-jest.mock("./products.repository");
-jest.mock("../carts/carts.service");
+const getAllProductsQueryMock = jest.fn();
+const addProductQueryMock = jest.fn();
+const getProductByNameQueryMock = jest.fn();
+const getProductByIdQueryMock = jest.fn();
+const deleteProductQueryMock = jest.fn();
+const removeCartItemByProductIdMock = jest.fn();
 
-const getAllProductsQueryMock = jest.mocked(getAllProductsQuery);
-const addProductQueryMock = jest.mocked(addProductQuery);
-const getProductByNameQueryMock = jest.mocked(getProductByNameQuery);
-const getProductByIdQueryMock = jest.mocked(getProductByIdQuery);
-const deleteProductQueryMock = jest.mocked(deleteProductQuery);
-const removeCartItemByProductIdMock = jest.mocked(removeCartItemByProductId);
+const mockProductRepository: ProductRepository = {
+  getAllProducts: getAllProductsQueryMock,
+  addProduct: addProductQueryMock,
+  getProductByName: getProductByNameQueryMock,
+  getProductById: getProductByIdQueryMock,
+  deleteProduct: deleteProductQueryMock,
+};
+
+const mockCartsService = {
+  removeCartItemByProductId: removeCartItemByProductIdMock,
+};
+
+const productsService = new ProductsService(
+  mockProductRepository,
+  mockCartsService,
+);
+
+const getAllProducts = () => productsService.getAllProducts();
+const addProduct = (arg: Parameters<typeof productsService.addProduct>[0]) =>
+  productsService.addProduct(arg);
+const deleteProduct = (id: number) => productsService.deleteProduct(id);
 
 describe("products", () => {
   beforeEach(() => {
