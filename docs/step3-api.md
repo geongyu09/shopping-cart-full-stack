@@ -16,6 +16,7 @@ http://localhost:3000
 ### 1-3. 응답 형식
 
 - 응답 body는 JSON 형식으로 전달한다.
+- 성공 응답은 `{ "status": "success", "message": "...", "data": ... }` 형식으로 반환한다.
 - 삭제 성공 응답은 body를 반환하지 않는다.
 - 에러 응답은 공통 에러 응답 형식으로 반환한다.
 
@@ -41,6 +42,7 @@ http://localhost:3000
 
 ```json
 {
+  "status": "error",
   "message": "유효하지 않은 쿠폰입니다."
 }
 ```
@@ -63,30 +65,34 @@ GET /order
 
 ```json
 {
-  "orderId": "order-20260612-0001",
-  "orderProducts": [
-    {
-      "productId": "prod-1001",
-      "productName": "상품A",
-      "productPrice": 16000,
-      "imgUrl": "./asset/imageA.png",
-      "quantity": 2
-    },
-    {
-      "productId": "prod-1002",
-      "productName": "상품B",
-      "productPrice": 11000,
-      "imgUrl": "./asset/imageB.png",
-      "quantity": 1
+  "status": "success",
+  "message": "주문 정보를 정상적으로 조회하였습니다.",
+  "data": {
+    "orderId": "order-20260612-0001",
+    "orderProducts": [
+      {
+        "productId": "prod-1001",
+        "productName": "상품A",
+        "productPrice": 16000,
+        "imgUrl": "./asset/imageA.png",
+        "quantity": 2
+      },
+      {
+        "productId": "prod-1002",
+        "productName": "상품B",
+        "productPrice": 11000,
+        "imgUrl": "./asset/imageB.png",
+        "quantity": 1
+      }
+    ],
+    "isIsland": false,
+    "couponIds": ["coupon-5000", "coupon-night10"],
+    "priceInfo": {
+      "orderPrice": 58000,
+      "discountPrice": 10800,
+      "DeliveryFee": 3000,
+      "totalPrice": 50200
     }
-  ],
-  "isIsland": false,
-  "couponIds": ["coupon-5000", "coupon-night10"],
-  "priceInfo": {
-    "orderPrice": 58000,
-    "discountPrice": 10800,
-    "DeliveryFee": 3000,
-    "totalPrice": 50200
   }
 }
 ```
@@ -134,7 +140,11 @@ POST /order
 
 ```json
 {
-  "orderId": "order-20260612-0001"
+  "status": "success",
+  "message": "주문 정보를 정상적으로 추가하였습니다.",
+  "data": {
+    "orderId": "order-20260612-0001"
+  }
 }
 ```
 
@@ -144,6 +154,7 @@ Request 필드 안에 필수 필드가 정의되지 않았거나, 필드 값이 
 
 ```json
 {
+  "status": "error",
   "message": "유효하지 않은 상품 이름입니다."
 }
 ```
@@ -152,6 +163,7 @@ productId에 해당하는 상품이 존재하지 않는 경우 `404 Not Found`�
 
 ```json
 {
+  "status": "error",
   "message": "존재하지 않는 상품 이름입니다."
 }
 ```
@@ -185,11 +197,15 @@ PATCH /order
 
 ```json
 {
-  "priceInfo": {
-    "orderPrice": 58000,
-    "discountPrice": 10800,
-    "DeliveryFee": 6000,
-    "totalPrice": 53200
+  "status": "success",
+  "message": "주문 정보를 정상적으로 수정하였습니다.",
+  "data": {
+    "priceInfo": {
+      "orderPrice": 58000,
+      "discountPrice": 10800,
+      "DeliveryFee": 6000,
+      "totalPrice": 53200
+    }
   }
 }
 ```
@@ -200,6 +216,7 @@ Request 필드 안에 필수 필드가 정의되지 않았거나, 필드 값이 
 
 ```json
 {
+  "status": "error",
   "message": "유효하지 않은 쿠폰입니다."
 }
 ```
@@ -208,6 +225,7 @@ couponIds에 해당하는 쿠폰이 존재하지 않는 경우 `404 Not Found`�
 
 ```json
 {
+  "status": "error",
   "message": "존재하지 않는 쿠폰입니다."
 }
 ```
@@ -237,7 +255,11 @@ POST /order/discount-price
 
 ```json
 {
-  "discountPrice": 6000
+  "status": "success",
+  "message": "할인 금액을 정상적으로 계산하였습니다.",
+  "data": {
+    "discountPrice": 6000
+  }
 }
 ```
 
@@ -247,6 +269,7 @@ Request 필드 안에 필수 필드가 정의되지 않았거나, 필드 값이 
 
 ```json
 {
+  "status": "error",
   "message": "유효하지 않은 쿠폰입니다."
 }
 ```
@@ -255,6 +278,7 @@ couponIds에 해당하는 쿠폰이 존재하지 않는 경우 `404 Not Found`�
 
 ```json
 {
+  "status": "error",
   "message": "존재하지 않는 쿠폰입니다."
 }
 ```
@@ -277,35 +301,39 @@ GET /coupons
 
 ```json
 {
-  "couponList": [
-    {
-      "couponId": "FIXED5000",
-      "couponName": "5,000원 할인 쿠폰",
-      "isDisabled": false,
-      "couponExpiration": 1796050799000,
-      "option": "최소 주문 금액: 100,000원"
-    },
-    {
-      "couponId": "BOGO",
-      "couponName": "2개 구매 시 1개 무료 쿠폰",
-      "isDisabled": true,
-      "couponExpiration": 1782831599000
-    },
-    {
-      "couponId": "FREESHIPPING",
-      "couponName": "5만원 이상 구매 시 무료 배송 쿠폰",
-      "isDisabled": true,
-      "couponExpiration": 1788188399000,
-      "option": "최소 주문 금액: 50,000원"
-    },
-    {
-      "couponId": "MIRACLESALE",
-      "couponName": "미라클모닝 30% 할인 쿠폰",
-      "isDisabled": false,
-      "couponExpiration": 1785509999000,
-      "option": "사용 가능 시간: 오전 4시부터 7시까지"
-    }
-  ]
+  "status": "success",
+  "message": "쿠폰 목록을 정상적으로 조회하였습니다.",
+  "data": {
+    "couponList": [
+      {
+        "couponId": "FIXED5000",
+        "couponName": "5,000원 할인 쿠폰",
+        "isDisabled": false,
+        "couponExpiration": 1796050799000,
+        "option": "최소 주문 금액: 100,000원"
+      },
+      {
+        "couponId": "BOGO",
+        "couponName": "2개 구매 시 1개 무료 쿠폰",
+        "isDisabled": true,
+        "couponExpiration": 1782831599000
+      },
+      {
+        "couponId": "FREESHIPPING",
+        "couponName": "5만원 이상 구매 시 무료 배송 쿠폰",
+        "isDisabled": true,
+        "couponExpiration": 1788188399000,
+        "option": "최소 주문 금액: 50,000원"
+      },
+      {
+        "couponId": "MIRACLESALE",
+        "couponName": "미라클모닝 30% 할인 쿠폰",
+        "isDisabled": false,
+        "couponExpiration": 1785509999000,
+        "option": "사용 가능 시간: 오전 4시부터 7시까지"
+      }
+    ]
+  }
 }
 ```
 
