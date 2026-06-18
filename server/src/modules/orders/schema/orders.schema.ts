@@ -1,6 +1,6 @@
 import ERROR_CODES from "@/ERROR_CODE";
 import createAppError from "@/errors/AppError";
-import { OrderInfo, OrderProduct, OrdersDB } from "../types";
+import { OrderProduct } from "../types";
 
 const checkOrderProduct = (
   orderProduct: unknown,
@@ -47,38 +47,48 @@ export const validateCreateOrder = (body: unknown): OrderProduct[] => {
   return orderProducts;
 };
 
-export class UpdateOrderSchema {
-  key: keyof Pick<OrdersDB, "couponIds" | "isIsland">;
-  value: OrderInfo[typeof this.key];
-
-  constructor(body: unknown) {
-    if (
-      body === null ||
-      typeof body !== "object" ||
-      !("key" in body) ||
-      !("value" in body)
-    ) {
-      throw new Error("유효하지 않은 요청입니다.");
-    }
-
-    const { key, value } = body;
-
-    if (key !== "couponIds" && key !== "isIsland") {
-      throw new Error("유효하지 않은 요청입니다.");
-    }
-
-    if (key === "couponIds") {
-      if (
-        !Array.isArray(value) ||
-        !value.every((id) => typeof id === "string")
-      ) {
-        throw new Error("올바르지 않은 쿠폰 ID입니다.");
-      }
-    } else if (key === "isIsland" && typeof value !== "boolean") {
-      throw new Error("올바르지 않은 도서 산간 정보입니다.");
-    } else throw new Error("유효하지 않은 요청입니다.");
-
-    this.key = key;
-    this.value = value;
+export const validateUpdateOrder = (
+  body: unknown,
+): { couponIds: string[] } | { isIsland: boolean } => {
+  if (!body || typeof body !== "object") {
+    throw createAppError(ERROR_CODES.INVALID_ORDER_PRODUCTS);
   }
-}
+
+  if ("couponIds" in body) {
+    const { couponIds } = body as { couponIds: unknown };
+    if (
+      !Array.isArray(couponIds) ||
+      !couponIds.every((id) => typeof id === "string")
+    ) {
+      throw createAppError(ERROR_CODES.INVALID_COUPON_IDS);
+    }
+    return { couponIds };
+  }
+
+  if ("isIsland" in body) {
+    const { isIsland } = body as { isIsland: unknown };
+    if (typeof isIsland !== "boolean") {
+      throw createAppError(ERROR_CODES.INVALID_IS_ISLAND);
+    }
+    return { isIsland };
+  }
+
+  throw createAppError(ERROR_CODES.INVALID_ORDER_PRODUCTS);
+};
+
+export const validateCouponIds = (body: unknown): string[] => {
+  if (!body || typeof body !== "object" || !("couponIds" in body)) {
+    throw createAppError(ERROR_CODES.INVALID_COUPON_IDS);
+  }
+
+  const { couponIds } = body as { couponIds: unknown };
+
+  if (
+    !Array.isArray(couponIds) ||
+    !couponIds.every((id) => typeof id === "string")
+  ) {
+    throw createAppError(ERROR_CODES.INVALID_COUPON_IDS);
+  }
+
+  return couponIds;
+};
