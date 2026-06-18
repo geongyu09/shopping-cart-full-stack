@@ -13,12 +13,6 @@ export interface OrdersDB {
   orderProducts: OrderProduct[];
   isIsland: boolean;
   couponIds: CouponDB["couponId"][];
-  priceInfo: {
-    orderPrice: number;
-    discountPrice: number;
-    deliveryFee: number;
-    totalPrice: number;
-  };
 }
 
 export interface OrderProduct {
