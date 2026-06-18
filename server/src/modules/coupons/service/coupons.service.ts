@@ -1,5 +1,5 @@
-import { CouponRepository } from "./coupons.repository";
-import { CouponDB } from "./types";
+import { CouponRepository } from "../repository/coupons.repository";
+import { CouponDB } from "../types";
 
 export interface DiscountContextItem {
   productId: string;
@@ -18,6 +18,39 @@ export class CouponsService {
 
   getCouponById(couponId: string) {
     return this.couponRepository.getCouponById(couponId);
+  }
+
+  getCouponList() {
+    return this.couponRepository.getCoupons().map((coupon) => {
+      const option = this.buildCouponOption(coupon);
+
+      return {
+        couponId: coupon.couponId,
+        couponName: coupon.couponName,
+        // couponDB에는 없지만 BE에서 계산해 내려주는 값
+        isDisabled: this.isDisabled(coupon),
+        couponExpiration: coupon.couponExpiration,
+        ...(option ? { option } : {}),
+      };
+    });
+  }
+
+  private isDisabled(coupon: CouponDB): boolean {
+    return coupon.isDisabled || coupon.couponExpiration < Date.now();
+  }
+
+  private buildCouponOption(coupon: CouponDB): string | undefined {
+    const { minimumOrderPrice, duration } = coupon.discountInfo;
+
+    if (minimumOrderPrice > 0) {
+      return `최소 주문 금액: ${minimumOrderPrice.toLocaleString("ko-KR")}원`;
+    }
+
+    if (duration.startDate !== 0 || duration.endDate !== 24) {
+      return `사용 가능 시간: 오전 ${duration.startDate}시부터 ${duration.endDate}시까지`;
+    }
+
+    return undefined;
   }
 
   calculateDiscountPrice(couponId: string, context: DiscountContext): number {

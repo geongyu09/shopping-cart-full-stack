@@ -1,4 +1,4 @@
-import { CouponDB } from "./types";
+import { CouponDB } from "../types";
 
 export interface CouponRepository {
   getCoupons(): CouponDB[];

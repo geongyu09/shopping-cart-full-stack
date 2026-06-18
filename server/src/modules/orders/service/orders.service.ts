@@ -1,6 +1,6 @@
 import ERROR_CODES from "@/ERROR_CODE";
 import createAppError from "@/errors/AppError";
-import { CouponsService } from "@/modules/coupon/coupons.service";
+import { CouponsService } from "@/modules/coupons/service/coupons.service";
 import { ProductsService } from "@/modules/products/service/products.service";
 import { OrderRepository } from "../repository/orders.repository";
 import { OrderProduct } from "../types";

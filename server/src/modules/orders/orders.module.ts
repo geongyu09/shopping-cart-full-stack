@@ -1,4 +1,4 @@
-import { couponService } from "../coupon/coupons.module";
+import { couponService } from "../coupons/coupons.module";
 import { productsService } from "../products/products.module";
 import { OrdersController } from "./controller/orders.controller";
 import { InMemoryOrderRepository } from "./repository/orders.repository";
