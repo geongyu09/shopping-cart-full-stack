@@ -4,3 +4,4 @@ import { ordersController } from "./orders.module";
 export const ordersRouter = express.Router();
 
 ordersRouter.get("/", ordersController.getOrders);
+ordersRouter.post("/", ordersController.postOrders);
