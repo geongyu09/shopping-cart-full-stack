@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import { validateID, validateQuantity } from "../schema/carts.schema";
 import { CartsService } from "../service/carts.service";
-import { cartsRouter } from "../carts.routes";
 
 export class CartsController {
   constructor(private cartsService: CartsService) {}

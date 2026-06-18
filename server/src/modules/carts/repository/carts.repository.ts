@@ -1,5 +1,4 @@
-import { CartItem } from "@/type";
-import { CartDB } from "@db/inMemoryDB";
+import { CartItem } from "../types";
 
 export interface CartRepository {
   getCarts(): CartItem[];
@@ -9,7 +8,7 @@ export interface CartRepository {
 }
 
 export class InMemoryCartRepository {
-  private cartDB = CartDB; // TODO: DB를 내부에서 관리하도록 변경
+  private cartDB = new Map<number, CartItem>();
 
   getCarts() {
     const carts = [...this.cartDB.values()];
@@ -34,5 +33,13 @@ export class InMemoryCartRepository {
 
     cartItem.quantity = quantity;
     return cartItem;
+  }
+
+  addCartItem(productId: number, cartItem: CartItem) {
+    this.cartDB.set(productId, cartItem);
+  }
+
+  clear() {
+    this.cartDB.clear();
   }
 }

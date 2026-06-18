@@ -1,10 +1,11 @@
 import request from "supertest";
 import app from "@/app";
-import { CartDB, ProductDB } from "@db/inMemoryDB";
+import { productsRepository } from "../products.routes";
+import { cartsRepository } from "@modules/carts/carts.routes";
 
 const resetDB = () => {
-  ProductDB.clear();
-  CartDB.clear();
+  productsRepository.clear();
+  cartsRepository.clear();
 };
 
 const seedProduct = (overrides: Partial<{ name: string; price: number; image: string }> = {}) => {

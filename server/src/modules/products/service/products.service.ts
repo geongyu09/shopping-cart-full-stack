@@ -1,6 +1,6 @@
 import ERROR_CODES from "@/ERROR_CODE";
 import createAppError from "@/errors/AppError";
-import type { Product } from "@/type";
+import type { Product } from "../types";
 import { validateProductRules } from "./products.validator";
 import { ProductRepository } from "../repository/products.repository";
 

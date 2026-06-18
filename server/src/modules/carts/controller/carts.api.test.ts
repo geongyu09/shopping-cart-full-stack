@@ -1,11 +1,12 @@
 import request from "supertest";
 import app from "@/app";
-import { CartDB, ProductDB } from "@db/inMemoryDB";
-import type { Product } from "@/type";
+import { cartsRepository } from "../carts.routes";
+import { productsRepository } from "@modules/products/products.routes";
+import type { Product } from "@modules/products/types";
 
 const resetDB = () => {
-  ProductDB.clear();
-  CartDB.clear();
+  productsRepository.clear();
+  cartsRepository.clear();
 };
 
 const createProductViaApi = async (overrides: Partial<Omit<Product, "id">> = {}): Promise<Product> => {
@@ -20,7 +21,7 @@ const createProductViaApi = async (overrides: Partial<Omit<Product, "id">> = {})
 };
 
 const addToCart = (product: Product, quantity: number) => {
-  CartDB.set(product.id, { product, quantity });
+  cartsRepository.addCartItem(product.id, { product, quantity });
 };
 
 beforeEach(() => {

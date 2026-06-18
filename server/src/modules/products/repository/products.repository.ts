@@ -1,5 +1,4 @@
-import type { Product } from "@/type";
-import { ProductDB } from "@db/inMemoryDB";
+import type { Product } from "../types";
 
 export interface ProductRepository {
   getAllProducts(): Product[];
@@ -10,7 +9,38 @@ export interface ProductRepository {
 }
 
 export class InMemoryProductRepository {
-  private productDB = ProductDB; // TODO: DB를 내부에서 관리하도록 변경
+  private productDB = new Map<number, Product>();
+
+  constructor() {
+    const seedProducts: Product[] = [
+      {
+        id: 0,
+        name: "스타벅스 아메리카노",
+        price: 4500,
+        image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300",
+      },
+      {
+        id: 1,
+        name: "블루보틀 라떼",
+        price: 6000,
+        image: "https://images.unsplash.com/photo-1561882468-9110e03e0f78?w=300",
+      },
+      {
+        id: 2,
+        name: "이디야 카페모카",
+        price: 4800,
+        image: "https://images.unsplash.com/photo-1542990253-0b8be9d10f51?w=300",
+      },
+      {
+        id: 3,
+        name: "투썸 케이크",
+        price: 7500,
+        image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=300",
+      },
+    ];
+
+    seedProducts.forEach((product) => this.productDB.set(product.id, product));
+  }
 
   private createId() {
     return this.productDB.size === 0
@@ -19,7 +49,6 @@ export class InMemoryProductRepository {
   }
 
   getAllProducts() {
-    // 상품 목록 조회
     const products = [...this.productDB.values()];
 
     return products;
@@ -55,5 +84,9 @@ export class InMemoryProductRepository {
     this.productDB.delete(id);
 
     return id;
+  }
+
+  clear() {
+    this.productDB.clear();
   }
 }
