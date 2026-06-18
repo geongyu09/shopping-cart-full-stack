@@ -5,6 +5,8 @@ import { CreateOrderProductSchema } from "../schema/orders.schema";
 import { OrderInfo } from "../types";
 
 export class OrdersService {
+  private MAX_BEST_COUPON_COUNT = 2;
+
   constructor(
     private ordersRepository: OrderRepository,
 
@@ -36,7 +38,10 @@ export class OrdersService {
     const deliveryFee = this.calculateShippingFee(orderPrice, isIsland);
 
     const bestCoupons = this.couponsService
-      .getBestCoupons({ deliveryFee, orderPrice, products }, 2)
+      .getBestCoupons(
+        { deliveryFee, orderPrice, products },
+        this.MAX_BEST_COUPON_COUNT,
+      )
       .map(({ couponId }) => couponId);
 
     const orderInfo: OrderInfo = {
