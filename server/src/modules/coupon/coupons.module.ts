@@ -1,3 +1,6 @@
+import { InMemoryCouponRepository } from "./coupons.repository";
 import { CouponsService } from "./coupons.service";
 
-export const couponService = new CouponsService();
+const couponRepository = new InMemoryCouponRepository();
+
+export const couponService = new CouponsService(couponRepository);
