@@ -3,15 +3,12 @@ import createAppError from "@/errors/AppError";
 import type { Product } from "../types";
 import { validateProductRules } from "./products.validator";
 import { ProductRepository } from "../repository/products.repository";
-
-interface CartItemRemover {
-  removeCartItemByProductId(productId: number): void;
-}
+import { CartsService } from "@/modules/carts/service/carts.service";
 
 export class ProductsService {
   constructor(
     private productRepository: ProductRepository,
-    private cartsService: CartItemRemover,
+    private cartsService: CartsService,
   ) {}
 
   getAllProducts() {
@@ -42,5 +39,14 @@ export class ProductsService {
     this.cartsService.removeCartItemByProductId(id);
 
     return id;
+  }
+
+  getProductById(id: Product["id"]) {
+    const product = this.productRepository.getProductById(id);
+    if (!product) {
+      throw createAppError(ERROR_CODES.NOT_EXIST_PRODUCT);
+    }
+
+    return product;
   }
 }

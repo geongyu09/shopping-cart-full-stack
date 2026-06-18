@@ -16,7 +16,7 @@ export class CartsController {
   };
 
   updateCartQuantity: RequestHandler = (req, res) => {
-    const id = +validateID(req.params.id);
+    const id = validateID(req.params.id);
 
     const { quantity } = validateQuantity(req.body);
 
@@ -30,7 +30,7 @@ export class CartsController {
   };
 
   deleteCartProduct: RequestHandler = (req, res) => {
-    const id = +validateID(req.params.id);
+    const id = validateID(req.params.id);
 
     const result = this.cartsService.deleteCartsProduct(id);
 

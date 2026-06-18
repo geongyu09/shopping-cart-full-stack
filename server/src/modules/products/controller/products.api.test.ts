@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "@/app";
-import { productsRepository } from "../products.routes";
-import { cartsRepository } from "@modules/carts/carts.routes";
+import { productsRepository } from "../products.module";
+import { cartsRepository } from "@modules/carts/carts.module";
 
 const resetDB = () => {
   productsRepository.clear();

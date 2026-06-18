@@ -2,13 +2,13 @@ import { CartItem } from "../types";
 
 export interface CartRepository {
   getCarts(): CartItem[];
-  deleteCart(productId: number): number;
-  getCartItemByProductId(productId: number): CartItem | undefined;
-  updateCartQuantity(productId: number, quantity: number): CartItem | undefined;
+  deleteCart(productId: string): string;
+  getCartItemByProductId(productId: string): CartItem | undefined;
+  updateCartQuantity(productId: string, quantity: number): CartItem | undefined;
 }
 
 export class InMemoryCartRepository {
-  private cartDB = new Map<number, CartItem>();
+  private cartDB = new Map<string, CartItem>();
 
   getCarts() {
     const carts = [...this.cartDB.values()];
@@ -16,17 +16,17 @@ export class InMemoryCartRepository {
     return carts;
   }
 
-  deleteCart(productId: number) {
+  deleteCart(productId: string) {
     this.cartDB.delete(productId);
 
     return productId;
   }
 
-  getCartItemByProductId(productId: number) {
+  getCartItemByProductId(productId: string) {
     return this.cartDB.get(productId);
   }
 
-  updateCartQuantity(productId: number, quantity: number) {
+  updateCartQuantity(productId: string, quantity: number) {
     const cartItem = this.cartDB.get(productId);
 
     if (!cartItem) return undefined;
@@ -35,7 +35,7 @@ export class InMemoryCartRepository {
     return cartItem;
   }
 
-  addCartItem(productId: number, cartItem: CartItem) {
+  addCartItem(productId: string, cartItem: CartItem) {
     this.cartDB.set(productId, cartItem);
   }
 

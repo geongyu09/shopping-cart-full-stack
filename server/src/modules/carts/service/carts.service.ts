@@ -10,7 +10,7 @@ export class CartsService {
     return this.CartRepository.getCarts();
   }
 
-  changeCartQuantity(id: number, quantity: number) {
+  changeCartQuantity(id: string, quantity: number) {
     validateCartQuantity(quantity);
 
     const existingCartItem = this.CartRepository.getCartItemByProductId(id);
@@ -30,7 +30,7 @@ export class CartsService {
     };
   }
 
-  deleteCartsProduct(id: number) {
+  deleteCartsProduct(id: string) {
     const existingCartsProduct = this.CartRepository.getCartItemByProductId(id);
 
     if (!existingCartsProduct) {
@@ -40,7 +40,7 @@ export class CartsService {
     return this.CartRepository.deleteCart(id);
   }
 
-  removeCartItemByProductId(productId: number) {
+  removeCartItemByProductId(productId: string) {
     const existingCartItem =
       this.CartRepository.getCartItemByProductId(productId);
     if (!existingCartItem) return;
