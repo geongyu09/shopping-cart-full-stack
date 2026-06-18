@@ -29,7 +29,7 @@ export class ProductsService {
     return this.productRepository.addProduct(arg);
   }
 
-  deleteProduct(id: number) {
+  deleteProduct(id: Product["id"]) {
     // 존재하지 않는 상품인지 확인
     const existingProduct = this.productRepository.getProductById(id);
     if (!existingProduct) {

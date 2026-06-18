@@ -55,7 +55,7 @@ describe("POST /products", () => {
     expect(res.body.status).toBe("success");
     expect(res.body.message).toBe("상품을 정상적으로 등록하였습니다.");
     expect(res.body.data).toEqual({
-      id: expect.any(Number),
+      id: expect.any(String),
       name: "라떼",
       price: 6000,
       image: "https://example.com/latte.png",
@@ -124,7 +124,7 @@ describe("DELETE /products/:id", () => {
     expect(res.body.data).toEqual({ id });
 
     const list = await request(app).get("/products");
-    expect(list.body.data.find((p: { id: number }) => p.id === id)).toBeUndefined();
+    expect(list.body.data.find((p: { id: string }) => p.id === id)).toBeUndefined();
   });
 
   it("존재하지 않는 상품 ID이면 404 NOT_EXIST_PRODUCT를 반환한다", async () => {

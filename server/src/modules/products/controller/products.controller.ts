@@ -28,7 +28,7 @@ export class ProductsController {
   };
 
   deleteProduct: RequestHandler = (req, res) => {
-    const id = +validateID(req.params.id);
+    const id = validateID(req.params.id);
 
     const product = this.productsService.deleteProduct(id);
 

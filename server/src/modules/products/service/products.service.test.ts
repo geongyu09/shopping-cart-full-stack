@@ -29,7 +29,7 @@ const productsService = new ProductsService(
 const getAllProducts = () => productsService.getAllProducts();
 const addProduct = (arg: Parameters<typeof productsService.addProduct>[0]) =>
   productsService.addProduct(arg);
-const deleteProduct = (id: number) => productsService.deleteProduct(id);
+const deleteProduct = (id: string) => productsService.deleteProduct(id);
 
 describe("products", () => {
   beforeEach(() => {
@@ -40,8 +40,8 @@ describe("products", () => {
     it("등록된 모든 상품을 반환한다.", () => {
       // given
       const mockProducts = [
-        { id: 1, name: "상품1", price: 1000, image: "" },
-        { id: 2, name: "상품2", price: 2000, image: "" },
+        { id: "1", name: "상품1", price: 1000, image: "" },
+        { id: "2", name: "상품2", price: 2000, image: "" },
       ];
       getAllProductsQueryMock.mockReturnValue(mockProducts);
 
@@ -57,7 +57,7 @@ describe("products", () => {
     it("유효한 상품을 전달하면 저장된 상품을 반환한다.", () => {
       // given
       const newProduct = { name: "상품1", price: 1000, image: "" };
-      const savedProduct = { id: 1, ...newProduct };
+      const savedProduct = { id: "1", ...newProduct };
       getProductByNameQueryMock.mockReturnValue(undefined);
       addProductQueryMock.mockReturnValue(savedProduct);
 
@@ -116,7 +116,7 @@ describe("products", () => {
         price: 1000,
         image: "",
       };
-      const savedProduct = { id: 1, ...newProduct };
+      const savedProduct = { id: "1", ...newProduct };
       getProductByNameQueryMock.mockReturnValue(undefined);
       addProductQueryMock.mockReturnValue(savedProduct);
 
@@ -131,7 +131,7 @@ describe("products", () => {
     it("이미 존재하는 이름의 상품을 추가하면 DUPLICATE_PRODUCT_NAME 에러를 던지고 저장하지 않는다.", () => {
       // given
       const newProduct = { name: "상품1", price: 1000, image: "" };
-      getProductByNameQueryMock.mockReturnValue({ id: 1, ...newProduct });
+      getProductByNameQueryMock.mockReturnValue({ id: "1", ...newProduct });
 
       // when & then
       expect(() => addProduct(newProduct)).toThrow();
@@ -146,7 +146,7 @@ describe("products", () => {
       getProductByIdQueryMock.mockReturnValue(undefined);
 
       // when & then
-      expect(() => deleteProduct(1)).toThrow(
+      expect(() => deleteProduct("1")).toThrow(
         ERROR_CODES.NOT_EXIST_PRODUCT.message,
       );
       expect(deleteProductQueryMock).not.toHaveBeenCalled();
@@ -155,7 +155,7 @@ describe("products", () => {
 
     it("존재하는 상품을 삭제하면 해당 id를 반환한다.", () => {
       // given
-      const product = { id: 1, name: "상품1", price: 1000, image: "" };
+      const product = { id: "1", name: "상품1", price: 1000, image: "" };
       getProductByIdQueryMock.mockReturnValue(product);
 
       // when
@@ -168,7 +168,7 @@ describe("products", () => {
 
     it("존재하는 상품을 삭제하면 연관 장바구니 항목 제거를 carts 서비스에 위임한다.", () => {
       // given
-      const product = { id: 1, name: "상품1", price: 1000, image: "" };
+      const product = { id: "1", name: "상품1", price: 1000, image: "" };
       getProductByIdQueryMock.mockReturnValue(product);
 
       // when
