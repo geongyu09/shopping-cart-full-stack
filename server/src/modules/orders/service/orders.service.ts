@@ -1,25 +1,58 @@
+import ERROR_CODES from "@/ERROR_CODE";
+import createAppError from "@/errors/AppError";
 import { CouponsService } from "@/modules/coupon/coupons.service";
 import { ProductsService } from "@/modules/products/service/products.service";
 import { OrderRepository } from "../repository/orders.repository";
-import { CreateOrderProductSchema } from "../schema/orders.schema";
-import { OrderInfo } from "../types";
+import { OrderProduct } from "../types";
 
 export class OrdersService {
-  private MAX_BEST_COUPON_COUNT = 2;
+  private MAX_COUPON_COUNT = 2;
 
   constructor(
     private ordersRepository: OrderRepository,
-
     private couponsService: CouponsService,
     private productsService: ProductsService,
   ) {}
 
-  getOrders() {
-    return this.ordersRepository.getOrders();
+  getOrder() {
+    const order = this.ordersRepository.getOrders()[0];
+    if (!order) return null;
+
+    const enrichedProducts = order.orderProducts.map(
+      ({ productId, quantity }) => {
+        const product = this.productsService.getProductById(productId);
+        return {
+          productId,
+          productName: product.name,
+          productPrice: product.price,
+          imgUrl: product.image,
+          quantity,
+        };
+      },
+    );
+
+    const priceInfo = this.calculatePriceInfo(
+      order.orderProducts,
+      order.couponIds,
+      order.isIsland,
+    );
+
+    return {
+      orderId: order.orderId,
+      orderProducts: enrichedProducts,
+      isIsland: order.isIsland,
+      couponIds: order.couponIds,
+      priceInfo: {
+        orderPrice: priceInfo.orderPrice,
+        discountPrice: priceInfo.discountPrice,
+        DeliveryFee: priceInfo.deliveryFee,
+        totalPrice: priceInfo.totalPrice,
+      },
+    };
   }
 
-  createOrder({ orderProducts }: CreateOrderProductSchema) {
-    const isIsland = false; // 처음에 생성할 때에는 섬 지역을 false로 설정
+  createInitialOrder(orderProducts: OrderProduct[]) {
+    const isIsland = false;
 
     const orderPrice = orderProducts.reduce((acc, { productId, quantity }) => {
       const product = this.productsService.getProductById(productId);
@@ -40,44 +73,130 @@ export class OrdersService {
     const bestCoupons = this.couponsService
       .getBestCoupons(
         { deliveryFee, orderPrice, products },
-        this.MAX_BEST_COUPON_COUNT,
+        this.MAX_COUPON_COUNT,
       )
       .map(({ couponId }) => couponId);
 
-    const orderInfo: OrderInfo = {
+    const createdOrder = this.ordersRepository.createOrder({
       orderProducts,
       couponIds: bestCoupons,
       isIsland: false,
-    };
+    });
 
-    const createdOrder = this.ordersRepository.createOrder(orderInfo);
+    return createdOrder.orderId;
+  }
 
-    const priceInfo = this.calculateTotalPrice();
+  updateOrderCoupons(couponIds: string[]) {
+    if (couponIds.length > this.MAX_COUPON_COUNT) {
+      throw createAppError(ERROR_CODES.EXCEED_MAX_COUPON_COUNT);
+    }
+
+    this.validateCouponIds(couponIds);
+
+    const order = this.ordersRepository.getOrders()[0];
+    this.ordersRepository.updateOrder(order.orderId, {
+      ...order,
+      couponIds,
+    });
+
+    const priceInfo = this.calculatePriceInfo(
+      order.orderProducts,
+      couponIds,
+      order.isIsland,
+    );
 
     return {
-      ...createdOrder,
-      priceInfo,
+      priceInfo: {
+        orderPrice: priceInfo.orderPrice,
+        discountPrice: priceInfo.discountPrice,
+        DeliveryFee: priceInfo.deliveryFee,
+        totalPrice: priceInfo.totalPrice,
+      },
     };
   }
 
-  calculateTotalPrice() {
-    const { orderProducts, isIsland } = this.ordersRepository.getOrders()[0]; // 현재는 사용자가 1명이라는 가정으로 구현
-    const couponIds = this.ordersRepository
-      .getOrders()
-      .flatMap((order) => order.couponIds);
+  updateOrderIsIsland(isIsland: boolean) {
+    const order = this.ordersRepository.getOrders()[0];
+    this.ordersRepository.updateOrder(order.orderId, {
+      ...order,
+      isIsland,
+    });
 
-    const orderPrice = orderProducts.reduce((acc, { productId, quantity }) => {
+    const priceInfo = this.calculatePriceInfo(
+      order.orderProducts,
+      order.couponIds,
+      isIsland,
+    );
+
+    return {
+      priceInfo: {
+        orderPrice: priceInfo.orderPrice,
+        discountPrice: priceInfo.discountPrice,
+        DeliveryFee: priceInfo.deliveryFee,
+        totalPrice: priceInfo.totalPrice,
+      },
+    };
+  }
+
+  calculateDiscountPriceByCoupons(couponIds: string[]) {
+    this.validateCouponIds(couponIds);
+
+    const order = this.ordersRepository.getOrders()[0];
+
+    const orderPrice = order.orderProducts.reduce(
+      (acc, { productId, quantity }) => {
+        const product = this.productsService.getProductById(productId);
+        return acc + product.price * quantity;
+      },
+      0,
+    );
+
+    const products = order.orderProducts.map(({ productId, quantity }) => {
       const product = this.productsService.getProductById(productId);
-      return acc + product.price * quantity;
-    }, 0);
+      return { productId, price: product.price, quantity };
+    });
+
+    const deliveryFee = this.calculateShippingFee(orderPrice, order.isIsland);
+
+    const discountPrice = couponIds.reduce(
+      (acc, couponId) =>
+        acc +
+        this.couponsService.calculateDiscountPrice(couponId, {
+          orderPrice,
+          deliveryFee,
+          products,
+        }),
+      0,
+    );
+
+    return discountPrice;
+  }
+
+  private validateCouponIds(couponIds: string[]) {
+    for (const couponId of couponIds) {
+      const coupon = this.couponsService.getCouponById(couponId);
+      if (!coupon) {
+        throw createAppError(ERROR_CODES.NOT_EXIST_COUPON);
+      }
+    }
+  }
+
+  private calculatePriceInfo(
+    orderProducts: OrderProduct[],
+    couponIds: string[],
+    isIsland: boolean,
+  ) {
+    const orderPrice = orderProducts.reduce(
+      (acc, { productId, quantity }) => {
+        const product = this.productsService.getProductById(productId);
+        return acc + product.price * quantity;
+      },
+      0,
+    );
 
     const products = orderProducts.map(({ productId, quantity }) => {
       const product = this.productsService.getProductById(productId);
-      return {
-        productId,
-        price: product.price,
-        quantity,
-      };
+      return { productId, price: product.price, quantity };
     });
 
     const deliveryFee = this.calculateShippingFee(orderPrice, isIsland);
@@ -95,24 +214,16 @@ export class OrdersService {
 
     const totalPrice = orderPrice - discountPrice + deliveryFee;
 
-    return {
-      orderPrice,
-      deliveryFee,
-      discountPrice,
-      totalPrice,
-    };
+    return { orderPrice, deliveryFee, discountPrice, totalPrice };
   }
 
   private calculateShippingFee(orderAmount: number, isIsland: boolean): number {
     const DELIVERY_FEE = 3000;
     const IS_ISLAND_DELIVERY_FEE = 3000;
-
     const FREE_DELIVERY_THRESHOLD = 100000;
 
     if (orderAmount >= FREE_DELIVERY_THRESHOLD) return 0;
-
     if (isIsland) return DELIVERY_FEE + IS_ISLAND_DELIVERY_FEE;
-
     return DELIVERY_FEE;
   }
 }

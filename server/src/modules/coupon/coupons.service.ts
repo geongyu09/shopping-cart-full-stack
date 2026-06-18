@@ -16,6 +16,10 @@ export interface DiscountContext {
 export class CouponsService {
   constructor(private couponRepository: CouponRepository) {}
 
+  getCouponById(couponId: string) {
+    return this.couponRepository.getCouponById(couponId);
+  }
+
   calculateDiscountPrice(couponId: string, context: DiscountContext): number {
     const coupon = this.couponRepository.getCouponById(couponId);
 

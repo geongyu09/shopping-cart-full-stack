@@ -3,6 +3,7 @@ import { OrdersDB, OrderInfo } from "../types";
 export interface OrderRepository {
   getOrders(): OrdersDB[];
   createOrder(order: OrderInfo): OrdersDB;
+  clear(): void;
 }
 
 export class InMemoryOrderRepository implements OrderRepository {
@@ -29,5 +30,9 @@ export class InMemoryOrderRepository implements OrderRepository {
     this.orderDB.set(orderId, newOrder);
 
     return newOrder;
+  }
+
+  clear() {
+    this.orderDB.clear();
   }
 }
