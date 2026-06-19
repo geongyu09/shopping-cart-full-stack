@@ -10,6 +10,35 @@ export interface CartRepository {
 export class InMemoryCartRepository {
   private cartDB = new Map<string, CartItem>();
 
+  constructor() {
+    const seedCartItems: CartItem[] = [
+      {
+        product: {
+          id: "0",
+          name: "스타벅스 아메리카노",
+          price: 4500,
+          image:
+            "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300",
+        },
+        quantity: 2,
+      },
+      {
+        product: {
+          id: "1",
+          name: "블루보틀 라떼",
+          price: 6000,
+          image:
+            "https://images.unsplash.com/photo-1561882468-9110e03e0f78?w=300",
+        },
+        quantity: 1,
+      },
+    ];
+
+    seedCartItems.forEach((cartItem) =>
+      this.cartDB.set(cartItem.product.id, cartItem),
+    );
+  }
+
   getCarts() {
     const carts = [...this.cartDB.values()];
 

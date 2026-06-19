@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 
+import { ROUTES } from "@constants/routes";
 import CartsPage from "@pages/CartsPage";
 import OrderConfirmPage from "@pages/OrderConfirmPage";
-import { ROUTES } from "@constants/routes";
 
 function App() {
   return (
