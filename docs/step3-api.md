@@ -90,7 +90,7 @@ GET /order
     "priceInfo": {
       "orderPrice": 58000,
       "discountPrice": 10800,
-      "DeliveryFee": 3000,
+      "deliveryFee": 3000,
       "totalPrice": 50200
     }
   }
