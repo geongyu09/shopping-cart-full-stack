@@ -20,7 +20,7 @@ function OrderDeliveryInfoSection() {
           checked={isIsland}
           onChange={() => mutate({ isIsland: !isIsland })}
         />
-        배송 요청 사항: 문 앞에 두고 가주세요.
+        제주도 및 도서 산간 지역
       </OrderDeliveryInfoLabel>
     </OrderDeliveryInfoWrapper>
   );
