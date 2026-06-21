@@ -65,11 +65,11 @@ function CartListSection() {
   };
 
   const handleQuantityChange = (id: number, quantity: number) => {
-    quantityMutate(id, quantity);
+    quantityMutate({ id, quantity });
   };
 
   const handleDelete = (id: number) => {
-    deleteMutate(id);
+    deleteMutate({ id });
     unselect(id);
   };
 

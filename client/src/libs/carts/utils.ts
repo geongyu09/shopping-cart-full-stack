@@ -1,9 +1,9 @@
-import type { Cart } from "@/types/cartProduct";
+import type { Cart, Product } from "@/types/cartProduct";
 
 export const makeCheckedItem = (data: Cart[]) =>
   data.map(({ product }) => product.id);
 
-export const calcOrderAmount = (data: Cart[], checkedItems: number[]) =>
+export const calcOrderAmount = (data: Cart[], checkedItems: Product["id"][]) =>
   data.reduce((acc, { product, quantity }) => {
     return (
       acc + (checkedItems.includes(product.id) ? product.price * quantity : 0)

@@ -1,6 +1,7 @@
 import type { Product } from "@/types/cartProduct";
 import Button from "@components/common/shared/ui/Button";
 import useCheckedProductItems from "@hooks/feature/localStorageValue/useCheckedProductItems";
+import useOrderCreateMutation from "@hooks/feature/mutation/useOrderCreateMutation";
 import useOrderConfirmNavigate from "@hooks/feature/navigate/useOrderConfirmNavigate";
 import useCartQuery from "@hooks/feature/query/useCartQuery";
 import {
@@ -13,6 +14,7 @@ import CartConfirmButtonSkeleton from "./skeleton";
 
 function CartConfirmButton() {
   const { data: cartData } = useCartQuery();
+  const { mutate: createOrder } = useOrderCreateMutation();
   const { navigate: goOrderConfirm } = useOrderConfirmNavigate();
   const { checkedItems } = useCheckedProductItems<Product["id"]>();
 
@@ -20,9 +22,18 @@ function CartConfirmButton() {
   const deliveryFee = calcDeliveryFee(orderAmount);
   const totalAmount = calcTotalAmount(orderAmount, deliveryFee);
 
-  const isChecked = (id: number) => checkedItems.includes(id);
+  const isChecked = (id: string) => checkedItems.includes(id);
 
   const handleConfirm = () => {
+    const orderProducts = cartData
+      .filter(({ product }) => isChecked(product.id))
+      .map(({ product, quantity }) => ({
+        productId: product.id,
+        quantity,
+      }));
+
+    createOrder({ orderProducts });
+
     goOrderConfirm({
       totalAmount,
       products: cartData.filter(({ product }) => isChecked(product.id)),
