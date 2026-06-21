@@ -9,7 +9,15 @@ interface PatchCartQuantityResponse {
   data: Cart;
 }
 
-export const patchCartQuantity = async (id: number, quantity: number) => {
+export interface PatchCartQuantityRequest {
+  id: number;
+  quantity: number;
+}
+
+export const patchCartQuantity = async ({
+  id,
+  quantity,
+}: PatchCartQuantityRequest) => {
   const { data } = await fetcher.patch<PatchCartQuantityResponse>(
     `${CARTS_API}/${id}`,
     { quantity },
@@ -25,7 +33,11 @@ interface DeleteCartItemResponse {
   };
 }
 
-export const deleteCartItem = async (id: number) => {
+export interface DeleteCartItemRequest {
+  id: number;
+}
+
+export const deleteCartItem = async ({ id }: DeleteCartItemRequest) => {
   const { data } = await fetcher.delete<DeleteCartItemResponse>(
     `${CARTS_API}/${id}`,
   );

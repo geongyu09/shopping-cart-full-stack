@@ -22,9 +22,11 @@ interface PostOrderResponse {
   };
 }
 
-export const postOrder = async (
-  orderProducts: Pick<OrderProduct, "productId" | "quantity">[],
-) => {
+export interface PostOrderRequest {
+  orderProducts: Pick<OrderProduct, "productId" | "quantity">[];
+}
+
+export const postOrder = async ({ orderProducts }: PostOrderRequest) => {
   const { data } = await fetcher.post<PostOrderResponse>(`${ORDER_API}`, {
     orderProducts,
   });
@@ -39,9 +41,9 @@ interface PatchOrderResponse {
   };
 }
 
-export const patchOrder = async (
-  body: { couponIds: string[] } | { isIsland: boolean },
-) => {
+export type PatchOrderRequest = { couponIds: string[] } | { isIsland: boolean };
+
+export const patchOrder = async (body: PatchOrderRequest) => {
   const { data } = await fetcher.patch<PatchOrderResponse>(
     `${ORDER_API}`,
     body,

@@ -10,7 +10,13 @@ interface PostDiscountPriceResponse {
   };
 }
 
-export const postDiscountPrice = async (couponIds: string[]) => {
+export interface PostDiscountPriceRequest {
+  couponIds: string[];
+}
+
+export const postDiscountPrice = async ({
+  couponIds,
+}: PostDiscountPriceRequest) => {
   const { data } = await fetcher.post<PostDiscountPriceResponse>(
     `${ORDER_DISCOUNT_PRICE_API}`,
     { couponIds },
