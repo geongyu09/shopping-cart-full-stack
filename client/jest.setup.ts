@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { CART_QUERY_KEY } from "@/hooks/feature/query/useCartQuery";
-import { queryStore } from "@/queries/instance";
+import { queryStore } from "@/service/queries/instance";
 import { seedCarts, server } from "@/tests/setup/server";
 
 // MSW 수명주기: 처리되지 않은 요청은 오류로 처리해 누락을 빠르게 드러낸다.

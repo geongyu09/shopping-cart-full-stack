@@ -1,5 +1,5 @@
+import useSuspenseQuery from "@/service/queries/useSuspenseQuery";
 import { getCoupons } from "@apis/coupons";
-import useSuspenseQuery from "@/queries/useSuspenseQuery";
 
 export const COUPONS_QUERY_KEY = "coupons";
 

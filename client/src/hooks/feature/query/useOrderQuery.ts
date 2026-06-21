@@ -1,5 +1,5 @@
 import { getOrder } from "@apis/order";
-import useSuspenseQuery from "@/queries/useSuspenseQuery";
+import useSuspenseQuery from "@/service/queries/useSuspenseQuery";
 
 export const ORDER_QUERY_KEY = "order";
 

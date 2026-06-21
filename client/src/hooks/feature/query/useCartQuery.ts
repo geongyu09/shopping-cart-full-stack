@@ -1,5 +1,5 @@
+import useSuspenseQuery from "@/service/queries/useSuspenseQuery";
 import { getCart } from "@apis/carts";
-import useSuspenseQuery from "@/queries/useSuspenseQuery";
 
 export const CART_QUERY_KEY = "cart";
 

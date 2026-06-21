@@ -1,4 +1,4 @@
-import { queryStore } from "@/queries/instance";
+import { queryStore } from "@/service/queries/instance";
 import { useState } from "react";
 
 export interface MutateOptions<T> {
