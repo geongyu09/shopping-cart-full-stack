@@ -15,30 +15,39 @@ export interface DiscountContext {
   products: DiscountContextItem[];
 }
 
+export interface OrderContextProvider {
+  getCurrentDiscountContext(): DiscountContext | null;
+}
+
 export class CouponsService {
+  private orderContextProvider: OrderContextProvider | null = null;
+
   constructor(private couponRepository: CouponRepository) {}
+
+  setOrderContextProvider(provider: OrderContextProvider) {
+    this.orderContextProvider = provider;
+  }
 
   getCouponById(couponId: string) {
     return this.couponRepository.getCouponById(couponId);
   }
 
   getCouponList() {
+    const context =
+      this.orderContextProvider?.getCurrentDiscountContext() ?? null;
+    const orderPrice = context?.orderPrice ?? 0;
+
     return this.couponRepository.getCoupons().map((coupon) => {
       const option = this.buildCouponOption(coupon);
 
       return {
         couponId: coupon.couponId,
         couponName: coupon.couponName,
-        // couponDB에는 없지만 BE에서 계산해 내려주는 값
-        isDisabled: this.isDisabled(coupon),
+        isDisabled: !this.isUsable(coupon, orderPrice),
         couponExpiration: coupon.couponExpiration,
         ...(option ? { option } : {}),
       };
     });
-  }
-
-  private isDisabled(coupon: CouponDB): boolean {
-    return coupon.isDisabled || coupon.couponExpiration < Date.now();
   }
 
   private buildCouponOption(coupon: CouponDB): string | undefined {
@@ -88,7 +97,14 @@ export class CouponsService {
     if (coupon.isDisabled) return false;
     if (coupon.couponExpiration < Date.now()) return false;
     if (orderPrice < coupon.discountInfo.minimumOrderPrice) return false;
+    if (!this.isWithinUsableTime(coupon)) return false;
     return true;
+  }
+
+  private isWithinUsableTime(coupon: CouponDB): boolean {
+    const { startDate, endDate } = coupon.discountInfo.duration;
+    const currentHour = new Date().getHours();
+    return currentHour >= startDate && currentHour < endDate;
   }
 
   private computeDiscount(coupon: CouponDB, context: DiscountContext): number {

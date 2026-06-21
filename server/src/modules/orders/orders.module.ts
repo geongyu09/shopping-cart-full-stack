@@ -12,4 +12,6 @@ export const ordersService = new OrdersService(
   productsService,
 );
 
+couponService.setOrderContextProvider(ordersService);
+
 export const ordersController = new OrdersController(ordersService);

@@ -1,6 +1,9 @@
 import ERROR_CODES from "@/ERROR_CODE";
 import createAppError from "@/errors/AppError";
-import { CouponsService } from "@/modules/coupons/service/coupons.service";
+import {
+  CouponsService,
+  DiscountContext,
+} from "@/modules/coupons/service/coupons.service";
 import { ProductsService } from "@/modules/products/service/products.service";
 import { OrderRepository } from "../repository/orders.repository";
 import { OrderProduct } from "../types";
@@ -56,20 +59,8 @@ export class OrdersService {
   createInitialOrder(orderProducts: OrderProduct[]) {
     const isIsland = false;
 
-    const orderPrice = orderProducts.reduce((acc, { productId, quantity }) => {
-      const product = this.productsService.getProductById(productId);
-      return acc + product.price * quantity;
-    }, 0);
-
-    const products = orderProducts.map(({ productId, quantity }) => {
-      const product = this.productsService.getProductById(productId);
-      return {
-        productId,
-        price: product.price,
-        quantity,
-      };
-    });
-
+    const orderPrice = this.calculateOrderPrice(orderProducts);
+    const products = this.buildDiscountProducts(orderProducts);
     const deliveryFee = this.calculateShippingFee(orderPrice, isIsland);
 
     const bestCoupons = this.couponsService
@@ -82,7 +73,7 @@ export class OrdersService {
     const createdOrder = this.ordersRepository.createOrder({
       orderProducts,
       couponIds: bestCoupons,
-      isIsland: false,
+      isIsland,
     });
 
     return createdOrder.orderId;
@@ -143,35 +134,29 @@ export class OrdersService {
   calculateDiscountPriceByCoupons(couponIds: string[]) {
     this.validateCouponIds(couponIds);
 
-    const order = this.ordersRepository.getOrders()[0];
-
-    const orderPrice = order.orderProducts.reduce(
-      (acc, { productId, quantity }) => {
-        const product = this.productsService.getProductById(productId);
-        return acc + product.price * quantity;
-      },
-      0,
-    );
-
-    const products = order.orderProducts.map(({ productId, quantity }) => {
-      const product = this.productsService.getProductById(productId);
-      return { productId, price: product.price, quantity };
-    });
-
-    const deliveryFee = this.calculateShippingFee(orderPrice, order.isIsland);
+    const context = this.getCurrentDiscountContext();
+    if (!context) {
+      throw createAppError(ERROR_CODES.NOT_EXIST_ORDER);
+    }
 
     const discountPrice = couponIds.reduce(
       (acc, couponId) =>
-        acc +
-        this.couponsService.calculateDiscountPrice(couponId, {
-          orderPrice,
-          deliveryFee,
-          products,
-        }),
+        acc + this.couponsService.calculateDiscountPrice(couponId, context),
       0,
     );
 
     return discountPrice;
+  }
+
+  getCurrentDiscountContext(): DiscountContext | null {
+    const order = this.ordersRepository.getOrders()[0];
+    if (!order) return null;
+
+    const orderPrice = this.calculateOrderPrice(order.orderProducts);
+    const products = this.buildDiscountProducts(order.orderProducts);
+    const deliveryFee = this.calculateShippingFee(orderPrice, order.isIsland);
+
+    return { orderPrice, deliveryFee, products };
   }
 
   private validateCouponIds(couponIds: string[]) {
@@ -188,16 +173,8 @@ export class OrdersService {
     couponIds: string[],
     isIsland: boolean,
   ) {
-    const orderPrice = orderProducts.reduce((acc, { productId, quantity }) => {
-      const product = this.productsService.getProductById(productId);
-      return acc + product.price * quantity;
-    }, 0);
-
-    const products = orderProducts.map(({ productId, quantity }) => {
-      const product = this.productsService.getProductById(productId);
-      return { productId, price: product.price, quantity };
-    });
-
+    const orderPrice = this.calculateOrderPrice(orderProducts);
+    const products = this.buildDiscountProducts(orderProducts);
     const deliveryFee = this.calculateShippingFee(orderPrice, isIsland);
 
     const discountPrice = couponIds.reduce(
@@ -214,6 +191,22 @@ export class OrdersService {
     const totalPrice = orderPrice - discountPrice + deliveryFee;
 
     return { orderPrice, deliveryFee, discountPrice, totalPrice };
+  }
+
+  private calculateOrderPrice(orderProducts: OrderProduct[]): number {
+    return orderProducts.reduce((acc, { productId, quantity }) => {
+      const product = this.productsService.getProductById(productId);
+      return acc + product.price * quantity;
+    }, 0);
+  }
+
+  private buildDiscountProducts(
+    orderProducts: OrderProduct[],
+  ): DiscountContext["products"] {
+    return orderProducts.map(({ productId, quantity }) => {
+      const product = this.productsService.getProductById(productId);
+      return { productId, price: product.price, quantity };
+    });
   }
 
   private calculateShippingFee(orderAmount: number, isIsland: boolean): number {
