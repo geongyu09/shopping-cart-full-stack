@@ -36,15 +36,15 @@
     - [x] 개수
   - [ ] 쿠폰 적용 버튼
     - [ ] 클릭시 쿠폰 적용 모달이 뜬다.
-  - [ ] 쿠폰 적용 모달
-    - [ ] GET /coupons로 쿠폰 리스트를 조회하여 확인할 수 있다.
-    - [ ] x 버튼 혹은 dimmed를 클릭시 모달이 내려간다.
-    - [ ] 쿠폰 선택시 사용하기 버튼에 할인 금액을 표시한다.
-      - [ ] 쿠폰 선택시 POST /order/discount-price 요청으로 discountPrice를 계산한다.
-    - [ ] 사용하지 못하는 쿠폰(isDisabled: true)은 회색처리 및 disabled된다.
-    - [ ] 쿠폰은 최대 2개까지 선택할 수 있다.
-    - [ ] 사용하기 버튼 클릭시 모달이 내려가며 쿠폰이 적용된다.
-      - [ ] 선택한 couponIds를 PATCH /order로 전달하여 priceInfo를 갱신한다.
+  - [x] 쿠폰 적용 모달
+    - [x] GET /coupons로 쿠폰 리스트를 조회하여 확인할 수 있다.
+    - [x] x 버튼 혹은 dimmed를 클릭시 모달이 내려간다.
+    - [x] 쿠폰 선택시 사용하기 버튼에 할인 금액을 표시한다.
+      - [x] 쿠폰 선택시 POST /order/discount-price 요청으로 discountPrice를 계산한다.
+    - [x] 사용하지 못하는 쿠폰(isDisabled: true)은 회색처리 및 disabled된다.
+    - [x] 쿠폰은 최대 2개까지 선택할 수 있다.
+    - [x] 사용하기 버튼 클릭시 모달이 내려가며 쿠폰이 적용된다.
+      - [x] 선택한 couponIds를 PATCH /order로 전달하여 priceInfo를 갱신한다.
   - [x] 배송 정보 섹션
     - [x] 배송 정보 섹션 UI 구현
     - [x] 도서산간 여부 선택시 PATCH /order에 isIsland를 전달하여 배송비를 재계산한다.
