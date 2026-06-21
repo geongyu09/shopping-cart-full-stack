@@ -5,9 +5,9 @@ import Logo from "@components/common/shared/Logo";
 import PageLayout from "@components/common/shared/PageLayout";
 import PositionBottom from "@components/common/shared/PositionBottom";
 import Spacing from "@components/common/shared/Spacing";
-import CartConfirmButton from "@components/feature/CartConfirmButton";
-import CartHeadingSection from "@components/feature/CartHeadingSection";
-import CartListSection from "@components/feature/CartListSection";
+import CartHeadingSection from "@components/feature/pages/carts/CartHeadingSection";
+import CartListSection from "@components/feature/pages/carts/CartListSection";
+import CartConfirmButton from "@/components/feature/pages/carts/CartConfirmButton";
 import styled from "@emotion/styled";
 import { Suspense } from "react";
 
