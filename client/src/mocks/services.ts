@@ -103,8 +103,8 @@ export const getBestCoupons = (context: DiscountContext, count?: number) =>
     .sort((a, b) => computeDiscount(b, context) - computeDiscount(a, context))
     .slice(0, count);
 
-// server CouponsService.calculateDiscountPrice: 유효하지 않거나 사용 불가 쿠폰은
-// 일반 Error 를 던진다 → 핸들러 래퍼에서 500(INTERNAL_SERVER_ERROR)으로 매핑된다.
+// server CouponsService.calculateDiscountPrice: 존재하지 않는 쿠폰은
+// NOT_EXIST_COUPON(404), 조건 미달로 사용 불가한 쿠폰은 UNUSABLE_COUPON(400).
 export const calculateDiscountPrice = (
   couponId: string,
   context: DiscountContext,
@@ -112,11 +112,11 @@ export const calculateDiscountPrice = (
   const coupon = db.coupons.get(couponId);
 
   if (!coupon) {
-    throw new Error("유효하지 않은 쿠폰입니다.");
+    throw new MockAppError(ERROR_CODES.NOT_EXIST_COUPON);
   }
 
   if (!isCouponUsable(coupon, context.orderPrice)) {
-    throw new Error("사용할 수 없는 쿠폰입니다.");
+    throw new MockAppError(ERROR_CODES.UNUSABLE_COUPON);
   }
 
   return computeDiscount(coupon, context);

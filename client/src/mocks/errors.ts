@@ -77,6 +77,11 @@ export const ERROR_CODES = {
     message: "쿠폰은 최대 2개까지 적용할 수 있습니다.",
     status: 400,
   },
+  UNUSABLE_COUPON: {
+    code: "UNUSABLE_COUPON",
+    message: "사용할 수 없는 쿠폰입니다.",
+    status: 400,
+  },
   INVALID_ORDER_PRODUCTS: {
     code: "INVALID_ORDER_PRODUCTS",
     message: "유효하지 않은 주문 상품 정보입니다.",

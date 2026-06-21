@@ -1,3 +1,5 @@
+import ERROR_CODES from "@/ERROR_CODE";
+import createAppError from "@/errors/AppError";
 import { CouponRepository } from "../repository/coupons.repository";
 import { CouponDB } from "../types";
 
@@ -57,11 +59,11 @@ export class CouponsService {
     const coupon = this.couponRepository.getCouponById(couponId);
 
     if (!coupon) {
-      throw new Error("유효하지 않은 쿠폰입니다.");
+      throw createAppError(ERROR_CODES.NOT_EXIST_COUPON);
     }
 
     if (!this.isUsable(coupon, context.orderPrice)) {
-      throw new Error("사용할 수 없는 쿠폰입니다.");
+      throw createAppError(ERROR_CODES.UNUSABLE_COUPON);
     }
 
     return this.computeDiscount(coupon, context);
