@@ -1,9 +1,11 @@
+import PositionBottom from "@/components/common/shared/layout/PositionBottom";
 import PageLayout from "@components/common/shared/layout/PageLayout";
 import Spacing from "@components/common/shared/layout/Spacing";
 import Divider from "@components/common/shared/ui/Divider";
 import Header from "@components/common/shared/ui/Header";
-import WeakButton from "@components/common/shared/ui/WeakButton";
+import PaymentButton from "@components/feature/pages/orders/PaymentButton";
 import OrderConfirmAmountSection from "@components/feature/pages/orders/OrderConfirmAmountSection";
+import OrderConfirmApplyCouponButton from "@components/feature/pages/orders/OrderConfirmApplyCouponButton";
 import OrderConfirmHeading from "@components/feature/pages/orders/OrderConfirmHeading";
 import OrderConfirmProductList from "@components/feature/pages/orders/OrderConfirmProductList";
 import OrderDeliveryInfoSection from "@components/feature/pages/orders/OrderDeliveryInfoSectoin";
@@ -24,15 +26,16 @@ export default function OrderConfirmPage() {
           <Spacing size={2.25} />
           <OrderConfirmProductList />
           <Spacing size={2.25} />
-          <WeakButton fullWidth>쿠폰 적용</WeakButton>
-
+          <OrderConfirmApplyCouponButton />
           <Spacing size={2.25} />
-
           <OrderDeliveryInfoSection />
           <Spacing size={2.25} />
           <OrderConfirmAmountSection />
         </Suspense>
       </ContentArea>
+      <PositionBottom>
+        <PaymentButton />
+      </PositionBottom>
     </PageLayout>
   );
 }
