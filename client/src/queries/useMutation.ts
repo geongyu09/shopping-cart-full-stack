@@ -1,26 +1,31 @@
 import { queryStore } from "@/queries/instance";
 import { useState } from "react";
 
-interface UseMutationParams<T, Args extends unknown[]> {
-  mutateFn: (...args: Args) => Promise<T>;
+export interface MutateOptions<T> {
   onSuccess?: (data: T) => void;
   onError?: (error: unknown) => void;
 }
 
-export default function useMutation<T, Args extends unknown[] = []>({
+interface UseMutationParams<T, V> extends MutateOptions<T> {
+  mutateFn: (variables: V) => Promise<T>;
+}
+
+export default function useMutation<T, V = void>({
   mutateFn,
   onSuccess,
   onError,
-}: UseMutationParams<T, Args>) {
+}: UseMutationParams<T, V>) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const mutate = async (...args: Args) => {
+  const mutate = async (variables: V, options?: MutateOptions<T>) => {
     try {
       setIsLoading(true);
-      const res = await mutateFn(...args);
+      const res = await mutateFn(variables);
       onSuccess?.(res);
+      options?.onSuccess?.(res);
     } catch (e) {
       onError?.(e);
+      options?.onError?.(e);
     } finally {
       setIsLoading(false);
     }
