@@ -1,13 +1,13 @@
-import ErrorBoundary from "@components/common/shared/ErrorBoundary";
-import ErrorFallback from "@components/common/shared/ErrorFallback";
-import Header from "@components/common/shared/Header";
-import Logo from "@components/common/shared/Logo";
-import PageLayout from "@components/common/shared/PageLayout";
-import PositionBottom from "@components/common/shared/PositionBottom";
-import Spacing from "@components/common/shared/Spacing";
+import ErrorBoundary from "@components/common/entities/ErrorBoundary";
+import PageLayout from "@components/common/shared/layout/PageLayout";
+import PositionBottom from "@components/common/shared/layout/PositionBottom";
+import Spacing from "@components/common/shared/layout/Spacing";
+import ErrorFallback from "@components/common/shared/ui/ErrorFallback";
+import Header from "@components/common/shared/ui/Header";
+import Logo from "@components/common/shared/ui/Logo";
+import CartConfirmButton from "@components/feature/pages/carts/CartConfirmButton";
 import CartHeadingSection from "@components/feature/pages/carts/CartHeadingSection";
 import CartListSection from "@components/feature/pages/carts/CartListSection";
-import CartConfirmButton from "@/components/feature/pages/carts/CartConfirmButton";
 import styled from "@emotion/styled";
 import { Suspense } from "react";
 
