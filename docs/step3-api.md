@@ -5,7 +5,7 @@
 ### 1-1. Base URL
 
 ```
-http://localhost:3000
+http://localhost:8080
 ```
 
 ### 1-2. 요청 형식
@@ -17,8 +17,7 @@ http://localhost:3000
 
 - 응답 body는 JSON 형식으로 전달한다.
 - 성공 응답은 `{ "status": "success", "message": "...", "data": ... }` 형식으로 반환한다.
-- 삭제 성공 응답은 body를 반환하지 않는다.
-- 에러 응답은 공통 에러 응답 형식으로 반환한다.
+- 에러 응답은 `{ "status": "error", "message": "..." }` 형식으로 반환한다(`data` 없음).
 
 ### 1-4. 주요 식별자
 
@@ -33,7 +32,6 @@ http://localhost:3000
 | --------------------------- | -------------------- |
 | `200 OK`                    | 조회, 수정 성공      |
 | `201 Created`               | 생성 성공            |
-| `204 No Content`            | 삭제 성공            |
 | `400 Bad Request`           | 잘못된 요청          |
 | `404 Not Found`             | 존재하지 않는 리소스 |
 | `500 Internal Server Error` | 서버 내부 오류       |
@@ -43,7 +41,7 @@ http://localhost:3000
 ```json
 {
   "status": "error",
-  "message": "유효하지 않은 쿠폰입니다."
+  "message": "존재하지 않는 쿠폰입니다."
 }
 ```
 
@@ -86,7 +84,7 @@ GET /order
       }
     ],
     "isIsland": false,
-    "couponIds": ["coupon-5000", "coupon-night10"],
+    "couponIds": ["FIXED5000", "FREESHIPPING"],
     "priceInfo": {
       "orderPrice": 58000,
       "discountPrice": 10800,
@@ -99,7 +97,14 @@ GET /order
 
 #### Error
 
-없음
+저장된 주문이 없는 경우 `404 Not Found`를 응답한다.
+
+```json
+{
+  "status": "error",
+  "message": "존재하지 않는 주문입니다."
+}
+```
 
 ---
 
@@ -126,13 +131,13 @@ POST /order
 }
 ```
 
-- 그 외 속성값들은 모두 내부적으로 초기화
+- 그 외 속성값들은 모두 내부적으로 초기화된다. `isIsland`는 `false`로 설정되고, `couponIds`는 서버가 할인 금액이 가장 큰 최적 쿠폰(최대 2개)을 자동으로 선택해 채운다.
 
 | 이름            | 필수 여부 | 설명                                                         |
 | --------------- | --------- | ------------------------------------------------------------ |
-| `orderProducts` | 필수      | 빈 배열인 경우                                               |
-| `productId`     | 필수      | productId가 유효하지 않거나 존재하지 않은 상품인 경우        |
-| `quantity`      | 필수      | quantity가 유효하지 않거나 수량이 1 이상 99 이하가 아닌 경우 |
+| `orderProducts` | 필수      | 누락되거나 빈 배열이면 400                                   |
+| `productId`     | 필수      | 문자열이 아니면 400, 존재하지 않는 상품이면 404              |
+| `quantity`      | 필수      | 숫자가 아니면 400, 1 이상 99 이하가 아니면 400               |
 
 #### Response
 
@@ -150,12 +155,21 @@ POST /order
 
 #### Error
 
-Request 필드 안에 필수 필드가 정의되지 않았거나, 필드 값이 유효하지 않을 때 `400 Bad Request`를 응답한다.
+`orderProducts`가 누락/빈 배열이거나 항목 형식이 유효하지 않을 때 `400 Bad Request`를 응답한다.
 
 ```json
 {
   "status": "error",
-  "message": "유효하지 않은 상품 이름입니다."
+  "message": "유효하지 않은 주문 상품 정보입니다."
+}
+```
+
+`quantity`가 1~99 범위를 벗어난 경우 `400 Bad Request`를 응답한다.
+
+```json
+{
+  "status": "error",
+  "message": "주문 수량은 1~99까지 가능합니다."
 }
 ```
 
@@ -164,7 +178,7 @@ productId에 해당하는 상품이 존재하지 않는 경우 `404 Not Found`�
 ```json
 {
   "status": "error",
-  "message": "존재하지 않는 상품 이름입니다."
+  "message": "존재하지 않는 상품입니다."
 }
 ```
 
@@ -178,18 +192,28 @@ PATCH /order
 
 #### Request
 
+`couponIds` 또는 `isIsland` 중 하나만 전달한다. 두 필드를 함께 보내면 `couponIds`만 반영되고 `isIsland`는 무시된다.
+
 ```json
 {
-  "couponIds": ["coupon-5000", "coupon-night10"],
+  "couponIds": ["FIXED5000", "BOGO"]
+}
+```
+
+또는
+
+```json
+{
   "isIsland": true
 }
 ```
 
-| 이름        | 필수 여부 | 설명                                             |
-| ----------- | --------- | ------------------------------------------------ |
-| `couponIds` | 선택      | couponIds가 유효하지 않거나 2개 이하가 아닌 경우 |
-| `couponIds` | 선택      | couponIds가 존재하지 않는 경우                   |
-| `isIsland`  | 선택      | isIsland가 유효하지 않은 경우                    |
+| 이름        | 필수 여부 | 설명                                                      |
+| ----------- | --------- | --------------------------------------------------------- |
+| `couponIds` | 선택      | 문자열 배열이 아니면 400                                   |
+| `couponIds` | 선택      | 적용 쿠폰이 2개를 초과하면 400                            |
+| `couponIds` | 선택      | 존재하지 않는 쿠폰이 포함되면 404                          |
+| `isIsland`  | 선택      | boolean이 아니면 400                                      |
 
 #### Response
 
@@ -203,7 +227,7 @@ PATCH /order
     "priceInfo": {
       "orderPrice": 58000,
       "discountPrice": 10800,
-      "DeliveryFee": 6000,
+      "deliveryFee": 6000,
       "totalPrice": 53200
     }
   }
@@ -212,12 +236,30 @@ PATCH /order
 
 #### Error
 
-Request 필드 안에 필수 필드가 정의되지 않았거나, 필드 값이 유효하지 않을 때 `400 Bad Request`를 응답한다.
+`couponIds`가 문자열 배열이 아닌 경우 `400 Bad Request`를 응답한다.
 
 ```json
 {
   "status": "error",
-  "message": "유효하지 않은 쿠폰입니다."
+  "message": "올바르지 않은 쿠폰 ID입니다."
+}
+```
+
+적용 쿠폰이 2개를 초과한 경우 `400 Bad Request`를 응답한다.
+
+```json
+{
+  "status": "error",
+  "message": "쿠폰은 최대 2개까지 적용할 수 있습니다."
+}
+```
+
+`isIsland`가 boolean이 아닌 경우 `400 Bad Request`를 응답한다.
+
+```json
+{
+  "status": "error",
+  "message": "올바르지 않은 도서 산간 정보입니다."
 }
 ```
 
@@ -240,14 +282,14 @@ POST /order/discount-price
 
 ```json
 {
-  "couponIds": ["coupon-5000", "coupon-night10"]
+  "couponIds": ["FIXED5000", "BOGO"]
 }
 ```
 
-| 이름        | 필수 여부 | 설명                           |
-| ----------- | --------- | ------------------------------ |
-| `couponIds` | 선택      | couponIds가 유효하지 않은 경우 |
-| `couponIds` | 선택      | couponIds가 존재하지 않는 경우 |
+| 이름        | 필수 여부 | 설명                                                 |
+| ----------- | --------- | ---------------------------------------------------- |
+| `couponIds` | 필수      | 누락되거나 문자열 배열이 아니면 400                  |
+| `couponIds` | 필수      | 존재하지 않는 쿠폰이 포함되면 404                    |
 
 #### Response
 
@@ -265,12 +307,12 @@ POST /order/discount-price
 
 #### Error
 
-Request 필드 안에 필수 필드가 정의되지 않았거나, 필드 값이 유효하지 않을 때 `400 Bad Request`를 응답한다.
+`couponIds`가 누락되거나 문자열 배열이 아닌 경우 `400 Bad Request`를 응답한다.
 
 ```json
 {
   "status": "error",
-  "message": "유효하지 않은 쿠폰입니다."
+  "message": "올바르지 않은 쿠폰 ID입니다."
 }
 ```
 
@@ -314,20 +356,20 @@ GET /coupons
       },
       {
         "couponId": "BOGO",
-        "couponName": "2개 구매 시 1개 무료 쿠폰",
-        "isDisabled": true,
+        "couponName": "2+1 쿠폰",
+        "isDisabled": false,
         "couponExpiration": 1782831599000
       },
       {
         "couponId": "FREESHIPPING",
-        "couponName": "5만원 이상 구매 시 무료 배송 쿠폰",
-        "isDisabled": true,
+        "couponName": "무료 배송 쿠폰",
+        "isDisabled": false,
         "couponExpiration": 1788188399000,
         "option": "최소 주문 금액: 50,000원"
       },
       {
         "couponId": "MIRACLESALE",
-        "couponName": "미라클모닝 30% 할인 쿠폰",
+        "couponName": "30% 시간제 할인 쿠폰",
         "isDisabled": false,
         "couponExpiration": 1785509999000,
         "option": "사용 가능 시간: 오전 4시부터 7시까지"
@@ -337,7 +379,8 @@ GET /coupons
 }
 ```
 
-- couponDB에는 isDisabled 속성이 없지만, BE에서 계산해서 같이 내려준다.
+- `isDisabled`는 저장된 비활성화 여부와 만료 여부(`couponExpiration < 현재 시각`)를 OR로 계산해 BE에서 내려준다. 따라서 조회 시점에 따라 값이 달라질 수 있다.
+- `option`은 최소 주문 금액 또는 사용 가능 시간 제약이 있을 때만 포함된다. `BOGO`처럼 제약이 없는 쿠폰은 `option`이 생략된다.
 
 #### Error
 

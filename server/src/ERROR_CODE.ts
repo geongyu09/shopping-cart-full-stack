@@ -79,6 +79,11 @@ const ERROR_CODES = {
     message: "유효하지 않은 주문 상품 정보입니다.",
     status: 400,
   },
+  NOT_EXIST_ORDER: {
+    code: "NOT_EXIST_ORDER",
+    message: "존재하지 않는 주문입니다.",
+    status: 404,
+  },
   OUT_OF_RANGE_ORDER_QUANTITY: {
     code: "OUT_OF_RANGE_ORDER_QUANTITY",
     message: "주문 수량은 1~99까지 가능합니다.",

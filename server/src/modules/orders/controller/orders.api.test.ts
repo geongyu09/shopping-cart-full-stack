@@ -61,12 +61,19 @@ describe("GET /order (주문 정보 조회)", () => {
         priceInfo: expect.objectContaining({
           orderPrice: expect.any(Number),
           discountPrice: expect.any(Number),
-          // 명세 문서 표기 그대로 (DeliveryFee)
-          DeliveryFee: expect.any(Number),
+          deliveryFee: expect.any(Number),
           totalPrice: expect.any(Number),
         }),
       }),
     );
+  });
+
+  it("저장된 주문이 없으면 404를 반환한다", async () => {
+    const res = await request(app).get("/order");
+
+    expect(res.status).toBe(404);
+    expect(res.body.status).toBe("error");
+    expect(res.body.message).toBe("존재하지 않는 주문입니다.");
   });
 
   it("주문 상품 항목은 상품 상세 정보를 포함한다", async () => {
@@ -127,7 +134,9 @@ describe("POST /order (주문 정보 추가)", () => {
   it("quantity가 1 미만이면 400을 반환한다", async () => {
     const product = await createProductViaApi();
 
-    const res = await createOrderViaApi([{ productId: product.id, quantity: 0 }]);
+    const res = await createOrderViaApi([
+      { productId: product.id, quantity: 0 },
+    ]);
 
     expect(res.status).toBe(400);
     expect(res.body.status).toBe("error");

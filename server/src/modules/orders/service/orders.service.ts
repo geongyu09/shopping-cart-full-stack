@@ -16,7 +16,9 @@ export class OrdersService {
 
   getOrder() {
     const order = this.ordersRepository.getOrders()[0];
-    if (!order) return null;
+    if (!order) {
+      throw createAppError(ERROR_CODES.NOT_EXIST_ORDER);
+    }
 
     const enrichedProducts = order.orderProducts.map(
       ({ productId, quantity }) => {
@@ -45,7 +47,7 @@ export class OrdersService {
       priceInfo: {
         orderPrice: priceInfo.orderPrice,
         discountPrice: priceInfo.discountPrice,
-        DeliveryFee: priceInfo.deliveryFee,
+        deliveryFee: priceInfo.deliveryFee,
         totalPrice: priceInfo.totalPrice,
       },
     };
@@ -109,7 +111,7 @@ export class OrdersService {
       priceInfo: {
         orderPrice: priceInfo.orderPrice,
         discountPrice: priceInfo.discountPrice,
-        DeliveryFee: priceInfo.deliveryFee,
+        deliveryFee: priceInfo.deliveryFee,
         totalPrice: priceInfo.totalPrice,
       },
     };
@@ -132,7 +134,7 @@ export class OrdersService {
       priceInfo: {
         orderPrice: priceInfo.orderPrice,
         discountPrice: priceInfo.discountPrice,
-        DeliveryFee: priceInfo.deliveryFee,
+        deliveryFee: priceInfo.deliveryFee,
         totalPrice: priceInfo.totalPrice,
       },
     };
@@ -186,13 +188,10 @@ export class OrdersService {
     couponIds: string[],
     isIsland: boolean,
   ) {
-    const orderPrice = orderProducts.reduce(
-      (acc, { productId, quantity }) => {
-        const product = this.productsService.getProductById(productId);
-        return acc + product.price * quantity;
-      },
-      0,
-    );
+    const orderPrice = orderProducts.reduce((acc, { productId, quantity }) => {
+      const product = this.productsService.getProductById(productId);
+      return acc + product.price * quantity;
+    }, 0);
 
     const products = orderProducts.map(({ productId, quantity }) => {
       const product = this.productsService.getProductById(productId);
