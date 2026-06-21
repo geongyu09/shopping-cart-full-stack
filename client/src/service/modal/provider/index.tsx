@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, type PropsWithChildren } from "react";
 
 import CreatePortal from "../components/CreatePortal";
@@ -9,7 +7,7 @@ import { useFlush } from "../hooks/useFlush";
 
 export default function ModalProvider({ children }: PropsWithChildren) {
   const Queue = getQueue();
-  const flush = useFlush();
+  const { flush, dummyKey } = useFlush();
 
   const addModalAsync = useCallback(
     (modalComponent: React.ReactNode) => {
@@ -29,7 +27,7 @@ export default function ModalProvider({ children }: PropsWithChildren) {
   return (
     <ModalContext.Provider value={value}>
       {children}
-      <CreatePortal />
+      <CreatePortal key={dummyKey} />
     </ModalContext.Provider>
   );
 }
