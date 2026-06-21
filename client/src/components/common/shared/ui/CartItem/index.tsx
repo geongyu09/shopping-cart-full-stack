@@ -1,6 +1,7 @@
 import type { QuantityRange } from "@/types/cartProduct";
 import minus from "@assets/minus.svg";
 import plus from "@assets/plus.svg";
+import ProductLayout from "@components/common/shared/layout/ProductLayout";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 
@@ -22,13 +23,11 @@ export default function CartItem({
   onChangeQuantity,
 }: CartItemProps) {
   return (
-    <CartItemInfoContainer>
-      <CartItemImg src={image} alt={name} />
-      <CartItemInfoWrapper>
-        <ProductInfoWrapper>
-          <CartItemName>{name}</CartItemName>
-          <CartItemPrice>{price.toLocaleString()}원</CartItemPrice>
-        </ProductInfoWrapper>
+    <ProductLayout
+      imageContent={<CartItemImg src={image} alt={name} />}
+      nameContent={<CartItemName>{name}</CartItemName>}
+      priceContent={<CartItemPrice>{price.toLocaleString()}원</CartItemPrice>}
+      content={
         <QuantityWrapper>
           <QuantityButton
             src={minus}
@@ -46,16 +45,10 @@ export default function CartItem({
             }
           />
         </QuantityWrapper>
-      </CartItemInfoWrapper>
-    </CartItemInfoContainer>
+      }
+    />
   );
 }
-
-const CartItemInfoContainer = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-`;
 
 const CartItemImg = styled.img`
   width: 7rem;
@@ -63,18 +56,6 @@ const CartItemImg = styled.img`
   border-radius: 0.5rem;
   border: none;
   background-color: ${COLOR_PALETTE["image-placeholder"]};
-`;
-
-const CartItemInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const ProductInfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 `;
 
 const CartItemName = styled.p`
