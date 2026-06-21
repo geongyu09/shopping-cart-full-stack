@@ -1,4 +1,4 @@
-import Skeleton from "@components/common/shared/Skeleton";
+import Skeleton from "@components/common/shared/ui/Skeleton";
 import styled from "@emotion/styled";
 
 export default function CartHeadingSectionSkeleton() {

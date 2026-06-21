@@ -1,6 +1,6 @@
-import Divider from "@components/common/shared/Divider";
-import Skeleton from "@components/common/shared/Skeleton";
-import Spacing from "@components/common/shared/Spacing";
+import Spacing from "@components/common/shared/layout/Spacing";
+import Divider from "@components/common/shared/ui/Divider";
+import Skeleton from "@components/common/shared/ui/Skeleton";
 import styled from "@emotion/styled";
 
 interface CartListSectionSkeletonProps {

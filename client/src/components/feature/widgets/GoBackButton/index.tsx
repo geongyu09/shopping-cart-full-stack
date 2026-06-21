@@ -1,6 +1,6 @@
 import arrowLeft from "@assets/arrowLeft.svg";
 import styled from "@emotion/styled";
-import useGoBackNavigate from "@hooks/feature/useGoBackNavigate";
+import useGoBackNavigate from "@hooks/feature/navigate/useGoBackNavigate";
 
 export default function GoBackButton() {
   const { navigate: goBack } = useGoBackNavigate();

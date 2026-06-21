@@ -1,9 +1,9 @@
 import type { Product } from "@/types/cartProduct";
-import CartItem from "@components/common/entities/CartItem";
-import CartOrderAmount from "@components/common/entities/CartOrderAmount";
-import CheckBox from "@components/common/shared/CheckBox";
-import Divider from "@components/common/shared/Divider";
-import Spacing from "@components/common/shared/Spacing";
+import Spacing from "@components/common/shared/layout/Spacing";
+import CartItem from "@components/common/shared/ui/CartItem";
+import CartOrderAmount from "@components/common/shared/ui/CartOrderAmount";
+import CheckBox from "@components/common/shared/ui/CheckBox";
+import Divider from "@components/common/shared/ui/Divider";
 import styled from "@emotion/styled";
 import useCheckedProductItems from "@hooks/feature/localStorageValue/useCheckedProductItems";
 import useCartItemDeleteMutation from "@hooks/feature/mutation/useCartItemDeleteMutation";

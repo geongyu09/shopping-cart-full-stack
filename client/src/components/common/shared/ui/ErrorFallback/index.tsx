@@ -1,5 +1,5 @@
-import Button from "@components/common/shared/Button";
-import Spacing from "@components/common/shared/Spacing";
+import Button from "@/components/common/shared/ui/Button";
+import Spacing from "@/components/common/shared/layout/Spacing";
 import styled from "@emotion/styled";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 

@@ -1,4 +1,4 @@
-import SectionIntro from "@components/common/shared/SectionIntro";
+import SectionIntro from "@components/common/shared/ui/SectionIntro";
 import useCartQuery from "@hooks/feature/query/useCartQuery";
 
 import CartHeadingSectionSkeleton from "./skeleton";

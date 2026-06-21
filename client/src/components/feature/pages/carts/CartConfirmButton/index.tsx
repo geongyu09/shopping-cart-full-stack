@@ -1,5 +1,5 @@
 import type { Product } from "@/types/cartProduct";
-import Button from "@components/common/shared/Button";
+import Button from "@components/common/shared/ui/Button";
 import useCheckedProductItems from "@hooks/feature/localStorageValue/useCheckedProductItems";
 import useOrderConfirmNavigate from "@hooks/feature/navigate/useOrderConfirmNavigate";
 import useCartQuery from "@hooks/feature/query/useCartQuery";

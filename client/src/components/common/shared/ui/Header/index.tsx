@@ -14,7 +14,7 @@ export default function Header({ LeftComponent, RightComponent }: HeaderProps) {
     </HeaderContainer>
   );
 }
-
+//TODO: layout 분리하기
 const HeaderContainer = styled.header`
   width: 100%;
   height: 4rem;
