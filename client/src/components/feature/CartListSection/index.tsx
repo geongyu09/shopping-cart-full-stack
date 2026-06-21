@@ -17,6 +17,7 @@ import {
 } from "@libs/carts/utils";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 import { useEffect, useRef } from "react";
+import CartListSectionSkeleton from "./skeleton";
 
 function CartListSection() {
   const { data: cartData } = useCartQuery();
@@ -181,5 +182,7 @@ const DeleteButton = styled.button`
     background-color: ${COLOR_PALETTE.border};
   }
 `;
+
+CartListSection.Skeleton = CartListSectionSkeleton;
 
 export default CartListSection;

@@ -3,8 +3,11 @@ import ErrorFallback from "@components/common/shared/ErrorFallback";
 import Header from "@components/common/shared/Header";
 import Logo from "@components/common/shared/Logo";
 import PageLayout from "@components/common/shared/PageLayout";
+import PositionBottom from "@components/common/shared/PositionBottom";
 import Spacing from "@components/common/shared/Spacing";
-import CartsSection from "@components/feature/CartsSection";
+import CartConfirmButton from "@components/feature/CartConfirmButton";
+import CartHeadingSection from "@components/feature/CartHeadingSection";
+import CartListSection from "@components/feature/CartListSection";
 import styled from "@emotion/styled";
 import { Suspense } from "react";
 
@@ -14,10 +17,23 @@ export default function CartsPage() {
       <Header LeftComponent={<Logo />} />
       <ContentArea>
         <ErrorBoundary fallback={<ErrorFallback />}>
-          <Suspense fallback={<CartsSection.Skeleton />}>
-            <CartsSection />
-            <Spacing size={7} />
-          </Suspense>
+          <ContentContainer>
+            <Spacing size={2.25} />
+            <Suspense fallback={<CartHeadingSection.Skeleton />}>
+              <CartHeadingSection />
+            </Suspense>
+            <Spacing size={2.25} />
+            <Suspense fallback={<CartListSection.Skeleton />}>
+              <CartListSection />
+            </Suspense>
+          </ContentContainer>
+          <Spacing size={7} />
+
+          <PositionBottom>
+            <Suspense fallback={<CartConfirmButton.Skeleton />}>
+              <CartConfirmButton />
+            </Suspense>
+          </PositionBottom>
         </ErrorBoundary>
       </ContentArea>
     </PageLayout>
@@ -31,4 +47,10 @@ const ContentArea = styled.div`
   flex-direction: column;
   flex: 1;
   overflow: auto;
+`;
+
+const ContentContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;

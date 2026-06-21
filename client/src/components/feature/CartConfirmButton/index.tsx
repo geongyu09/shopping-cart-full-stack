@@ -8,6 +8,7 @@ import {
   calcOrderAmount,
   calcTotalAmount,
 } from "@libs/carts/utils";
+import CartConfirmButtonSkeleton from "./skeleton";
 
 function CartConfirmButton() {
   const { data: cartData } = useCartQuery();
@@ -37,5 +38,7 @@ function CartConfirmButton() {
     </Button>
   );
 }
+
+CartConfirmButton.Skeleton = CartConfirmButtonSkeleton;
 
 export default CartConfirmButton;

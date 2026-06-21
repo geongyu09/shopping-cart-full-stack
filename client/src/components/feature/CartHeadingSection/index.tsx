@@ -1,7 +1,8 @@
 import SectionIntro from "@components/common/shared/SectionIntro";
 import useCartQuery from "@hooks/feature/useCartQuery";
+import CartHeadingSectionSkeleton from "./skeleton";
 
-export default function CartHeadingSection() {
+function CartHeadingSection() {
   const { data: cartData } = useCartQuery();
 
   const productCount = cartData.length;
@@ -14,3 +15,7 @@ export default function CartHeadingSection() {
 
   return <SectionIntro title={title} description={description} />;
 }
+
+CartHeadingSection.Skeleton = CartHeadingSectionSkeleton;
+
+export default CartHeadingSection;
