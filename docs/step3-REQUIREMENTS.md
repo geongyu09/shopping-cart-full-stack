@@ -45,9 +45,9 @@
     - [ ] 쿠폰은 최대 2개까지 선택할 수 있다.
     - [ ] 사용하기 버튼 클릭시 모달이 내려가며 쿠폰이 적용된다.
       - [ ] 선택한 couponIds를 PATCH /order로 전달하여 priceInfo를 갱신한다.
-  - [ ] 배송 정보 섹션
-    - [ ] 배송 정보 섹션 UI 구현
-    - [ ] 도서산간 여부 선택시 PATCH /order에 isIsland를 전달하여 배송비를 재계산한다.
+  - [x] 배송 정보 섹션
+    - [x] 배송 정보 섹션 UI 구현
+    - [x] 도서산간 여부 선택시 PATCH /order에 isIsland를 전달하여 배송비를 재계산한다.
   - [ ] 주문 금액 정보 섹션
     - [ ] 주문 금액 정보 섹션 UI 구현
     - [ ] 주문 금액(orderPrice), 할인 금액(discountPrice), 배송비(deliveryFee), 총 결제 금액(totalPrice)을 표시한다.
