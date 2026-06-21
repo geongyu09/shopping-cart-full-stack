@@ -1,5 +1,6 @@
 import SectionIntro from "@components/common/shared/SectionIntro";
-import useCartQuery from "@hooks/feature/useCartQuery";
+import useCartQuery from "@hooks/feature/query/useCartQuery";
+
 import CartHeadingSectionSkeleton from "./skeleton";
 
 function CartHeadingSection() {

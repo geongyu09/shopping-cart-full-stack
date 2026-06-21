@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { CART_QUERY_KEY } from "@hooks/useCartQuery";
+import { CART_QUERY_KEY } from "@/hooks/feature/query/useCartQuery";
 import { queryStore } from "@/queries/instance";
 import { seedCarts, server } from "@/tests/setup/server";
 

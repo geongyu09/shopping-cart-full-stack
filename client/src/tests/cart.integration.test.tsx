@@ -188,7 +188,9 @@ describe("가격 동기화", () => {
     await user.click(minus); // 러닝화 2 → 1 (서버 반영 후 재조회)
 
     await waitFor(() => {
-      expect(within(getItemRow(PRODUCT.shoes)).getByText("1")).toBeInTheDocument();
+      expect(
+        within(getItemRow(PRODUCT.shoes)).getByText("1"),
+      ).toBeInTheDocument();
       // 129,000×1 + 89,000×1 = 218,000
       expect(getAmountByLabel("총 주문 금액")).toBe("218,000원");
       expect(getAmountByLabel("총 결제 금액")).toBe("218,000원");
