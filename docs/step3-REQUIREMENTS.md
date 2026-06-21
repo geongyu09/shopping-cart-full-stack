@@ -48,7 +48,7 @@
   - [x] 배송 정보 섹션
     - [x] 배송 정보 섹션 UI 구현
     - [x] 도서산간 여부 선택시 PATCH /order에 isIsland를 전달하여 배송비를 재계산한다.
-  - [ ] 주문 금액 정보 섹션
-    - [ ] 주문 금액 정보 섹션 UI 구현
-    - [ ] 주문 금액(orderPrice), 할인 금액(discountPrice), 배송비(deliveryFee), 총 결제 금액(totalPrice)을 표시한다.
+  - [x] 주문 금액 정보 섹션
+    - [x] 주문 금액 정보 섹션 UI 구현
+    - [x] 주문 금액(orderPrice), 할인 금액(discountPrice), 배송비(deliveryFee), 총 결제 금액(totalPrice)을 표시한다.
   - [ ] 결제하기 버튼 클릭시 결제 확인 페이지로 이동한다.

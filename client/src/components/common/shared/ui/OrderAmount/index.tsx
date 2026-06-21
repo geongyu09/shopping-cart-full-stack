@@ -3,19 +3,21 @@ import Spacing from "@components/common/shared/layout/Spacing";
 import Divider from "@components/common/shared/ui/Divider";
 import styled from "@emotion/styled";
 
-interface CartOrderAmountProps {
+interface OrderAmountProps {
   orderAmount: number;
   deliveryFee: number;
   totalAmount: number;
+  discountAmount: number;
 }
 
-export default function CartOrderAmount({
+function OrderAmount({
   orderAmount,
   deliveryFee,
   totalAmount,
-}: CartOrderAmountProps) {
+  discountAmount,
+}: OrderAmountProps) {
   return (
-    <CartOrderAmountContainer>
+    <OrderAmountContainer>
       <OrderAmountInfoWrapper>
         <InfoIcon src={info} alt="정보" />
         <InfoText>
@@ -25,33 +27,40 @@ export default function CartOrderAmount({
       <Spacing size={0.75} />
       <Divider />
       <Spacing size={0.75} />
-      <CartOrderAmountInfoContainer>
-        <CartOrderAmountInfoLabel>총 주문 금액</CartOrderAmountInfoLabel>
-        <CartOrderAmountInfoValue>
+      <OrderAmountInfoContainer>
+        <OrderAmountInfoLabel>총 주문 금액</OrderAmountInfoLabel>
+        <OrderAmountInfoValue>
           {orderAmount.toLocaleString()}원
-        </CartOrderAmountInfoValue>
-      </CartOrderAmountInfoContainer>
+        </OrderAmountInfoValue>
+      </OrderAmountInfoContainer>
       <Spacing size={0.5} />
-      <CartOrderAmountInfoContainer>
-        <CartOrderAmountInfoLabel>배송비</CartOrderAmountInfoLabel>
-        <CartOrderAmountInfoValue>
+      <OrderAmountInfoContainer>
+        <OrderAmountInfoLabel>쿠폰 할인 금액</OrderAmountInfoLabel>
+        <OrderAmountInfoValue>
+          - {discountAmount.toLocaleString()}원
+        </OrderAmountInfoValue>
+      </OrderAmountInfoContainer>
+      <Spacing size={0.5} />
+      <OrderAmountInfoContainer>
+        <OrderAmountInfoLabel>배송비</OrderAmountInfoLabel>
+        <OrderAmountInfoValue>
           {deliveryFee.toLocaleString()}원
-        </CartOrderAmountInfoValue>
-      </CartOrderAmountInfoContainer>
+        </OrderAmountInfoValue>
+      </OrderAmountInfoContainer>
       <Spacing size={0.75} />
       <Divider />
       <Spacing size={0.75} />
-      <CartOrderAmountInfoContainer>
-        <CartOrderAmountInfoLabel>총 결제 금액</CartOrderAmountInfoLabel>
-        <CartOrderAmountInfoValue>
+      <OrderAmountInfoContainer>
+        <OrderAmountInfoLabel>총 결제 금액</OrderAmountInfoLabel>
+        <OrderAmountInfoValue>
           {totalAmount.toLocaleString()}원
-        </CartOrderAmountInfoValue>
-      </CartOrderAmountInfoContainer>
-    </CartOrderAmountContainer>
+        </OrderAmountInfoValue>
+      </OrderAmountInfoContainer>
+    </OrderAmountContainer>
   );
 }
 
-const CartOrderAmountContainer = styled.div``;
+const OrderAmountContainer = styled.div``;
 
 const OrderAmountInfoWrapper = styled.div`
   display: flex;
@@ -70,7 +79,7 @@ const InfoText = styled.span`
   line-height: 0.9375rem;
 `;
 
-const CartOrderAmountInfoContainer = styled.div`
+const OrderAmountInfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,14 +87,16 @@ const CartOrderAmountInfoContainer = styled.div`
   padding: 0.5rem;
 `;
 
-const CartOrderAmountInfoLabel = styled.span`
+const OrderAmountInfoLabel = styled.span`
   font-weight: 700;
   font-size: 1rem;
   line-height: 1rem;
 `;
 
-const CartOrderAmountInfoValue = styled.span`
+const OrderAmountInfoValue = styled.span`
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 100%;
 `;
+
+export default OrderAmount;
