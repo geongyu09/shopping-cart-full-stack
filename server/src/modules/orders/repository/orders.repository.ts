@@ -21,6 +21,8 @@ export class InMemoryOrderRepository implements OrderRepository {
   }
 
   createOrder(order: OrderInfo) {
+    this.orderDB.clear();
+
     const orderId = this.createId();
 
     const newOrder = {
