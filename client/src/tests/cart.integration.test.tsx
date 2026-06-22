@@ -275,10 +275,11 @@ describe("주문 확인 버튼", () => {
     expect(
       await screen.findByText("총 2종류의 상품 3개를 주문합니다."),
     ).toBeInTheDocument();
-    expect(screen.getByText("307,000원")).toBeInTheDocument();
+    // 배송비 0원(10만원 이상) → 총 결제 금액 307,000원
+    expect(getAmountByLabel("총 결제 금액")).toBe("307,000원");
   });
 
-  it('주문 확인 페이지의 "결제하기" 버튼은 항상 비활성화되어 있다', async () => {
+  it('주문 확인 페이지에 "결제하기" 버튼이 표시된다', async () => {
     const { user } = renderCartsApp();
     await waitForCartLoaded();
 
@@ -286,7 +287,7 @@ describe("주문 확인 버튼", () => {
 
     expect(
       await screen.findByRole("button", { name: "결제하기" }),
-    ).toBeDisabled();
+    ).toBeEnabled();
   });
 });
 
@@ -329,7 +330,7 @@ describe("기타", () => {
     renderCartsApp();
 
     expect(
-      await screen.findByText("현재 2종류의 상품이 담겨있습니다."),
+      await screen.findByText("총 2종류의 상품이 담겨있습니다."),
     ).toBeInTheDocument();
   });
 
