@@ -50,7 +50,7 @@ function CartListSection() {
     checkedItems.includes(product.id),
   );
 
-  const isChecked = (id: number) => checkedItems.includes(id);
+  const isChecked = (id: string) => checkedItems.includes(id);
 
   const handleSelectAll = () => {
     if (isAllChecked) return unselectAll();
@@ -58,17 +58,17 @@ function CartListSection() {
     cartData.forEach(({ product }) => select(product.id));
   };
 
-  const handleSelect = (id: number) => {
+  const handleSelect = (id: string) => {
     if (isChecked(id)) return unselect(id);
 
     select(id);
   };
 
-  const handleQuantityChange = (id: number, quantity: number) => {
+  const handleQuantityChange = (id: string, quantity: number) => {
     quantityMutate({ id, quantity });
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     deleteMutate({ id });
     unselect(id);
   };

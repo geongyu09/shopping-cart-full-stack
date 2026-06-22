@@ -199,8 +199,8 @@ describe("가격 동기화", () => {
 
   it("선택 금액이 100,000원 이상이면 배송비 0원, 미만이면 3,000원이다", async () => {
     seedCarts([
-      makeCart(10, "상품A", 50000, 1),
-      makeCart(11, "상품B", 60000, 1),
+      makeCart("10", "상품A", 50000, 1),
+      makeCart("11", "상품B", 60000, 1),
     ]);
     const { user } = renderCartsApp();
     await screen.findByText("상품A");

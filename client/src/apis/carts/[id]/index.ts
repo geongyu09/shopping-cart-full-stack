@@ -3,6 +3,7 @@ import fetcher from "@apis/instance";
 
 const CARTS_API = "/carts";
 
+//TODO: 타입을 기본형이 아닌 프론트 사용 타입으로 변경하기
 interface PatchCartQuantityResponse {
   status: "success" | "error";
   message: string;
@@ -10,7 +11,7 @@ interface PatchCartQuantityResponse {
 }
 
 export interface PatchCartQuantityRequest {
-  id: number;
+  id: string;
   quantity: number;
 }
 
@@ -29,12 +30,12 @@ interface DeleteCartItemResponse {
   status: "success" | "error";
   message: string;
   data: {
-    id: number;
+    id: string;
   };
 }
 
 export interface DeleteCartItemRequest {
-  id: number;
+  id: string;
 }
 
 export const deleteCartItem = async ({ id }: DeleteCartItemRequest) => {

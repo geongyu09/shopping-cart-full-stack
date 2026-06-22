@@ -4,11 +4,6 @@ import useCheckedProductItems from "@hooks/feature/localStorageValue/useCheckedP
 import useOrderCreateMutation from "@hooks/feature/mutation/useOrderCreateMutation";
 import useOrderConfirmNavigate from "@hooks/feature/navigate/useOrderConfirmNavigate";
 import useCartQuery from "@hooks/feature/query/useCartQuery";
-import {
-  calcDeliveryFee,
-  calcOrderAmount,
-  calcTotalAmount,
-} from "@libs/carts/utils";
 
 import CartConfirmButtonSkeleton from "./skeleton";
 
@@ -17,10 +12,6 @@ function CartConfirmButton() {
   const { mutate: createOrder } = useOrderCreateMutation();
   const { navigate: goOrderConfirm } = useOrderConfirmNavigate();
   const { checkedItems } = useCheckedProductItems<Product["id"]>();
-
-  const orderAmount = calcOrderAmount(cartData, checkedItems);
-  const deliveryFee = calcDeliveryFee(orderAmount);
-  const totalAmount = calcTotalAmount(orderAmount, deliveryFee);
 
   const isChecked = (id: string) => checkedItems.includes(id);
 
@@ -34,10 +25,7 @@ function CartConfirmButton() {
 
     createOrder({ orderProducts });
 
-    goOrderConfirm({
-      totalAmount,
-      products: cartData.filter(({ product }) => isChecked(product.id)),
-    });
+    goOrderConfirm();
   };
 
   return (

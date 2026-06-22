@@ -13,7 +13,7 @@ import { setupServer } from "msw/node";
  */
 
 export const makeCart = (
-  id: number,
+  id: string,
   name: string,
   price: number,
   quantity: number,
@@ -24,8 +24,8 @@ export const makeCart = (
 
 // src/mocks/handlers.ts 의 기본 장바구니와 동일한 구성
 export const DEFAULT_CARTS: Cart[] = [
-  makeCart(1, "무선 헤드폰", 129000, 1),
-  makeCart(2, "러닝화", 89000, 2),
+  makeCart("1", "무선 헤드폰", 129000, 1),
+  makeCart("2", "러닝화", 89000, 2),
 ];
 
 let carts: Cart[] = [];
@@ -47,7 +47,7 @@ export const handlers = [
   ),
 
   http.patch("/api/carts/:id", async ({ params, request }) => {
-    const id = Number(params.id);
+    const id = String(params.id);
     const { quantity } = (await request.json()) as { quantity: number };
     const target = carts.find((cart) => cart.product.id === id);
 
@@ -63,7 +63,7 @@ export const handlers = [
   }),
 
   http.delete("/api/carts/:id", ({ params }) => {
-    const id = Number(params.id);
+    const id = String(params.id);
     carts = carts.filter((cart) => cart.product.id !== id);
 
     return HttpResponse.json({
