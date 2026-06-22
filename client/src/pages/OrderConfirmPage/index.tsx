@@ -32,6 +32,7 @@ export default function OrderConfirmPage() {
           <Spacing size={2.25} />
           <OrderConfirmAmountSection />
         </Suspense>
+        <Spacing size={8} />
       </ContentArea>
       <PositionBottom>
         <PaymentButton />
