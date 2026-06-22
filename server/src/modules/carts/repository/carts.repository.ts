@@ -32,6 +32,16 @@ export class InMemoryCartRepository {
         },
         quantity: 1,
       },
+      {
+        product: {
+          id: "3",
+          name: "투썸 케이크",
+          price: 75000,
+          image:
+            "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=300",
+        },
+        quantity: 1,
+      },
     ];
 
     seedCartItems.forEach((cartItem) =>
