@@ -22,14 +22,6 @@ export default class ModalQueue {
     return [...this.queue];
   }
 
-  remove(modalId: string) {
-    this.queue = this.queue.filter((item) => item.id !== modalId);
-  }
-
-  clear() {
-    this.queue = [];
-  }
-
   private getRandomId() {
     return `modal_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   }
