@@ -1,4 +1,4 @@
-import Spacing from "@/components/common/shared/layout/Spacing";
+import Spacing from "@components/common/shared/layout/Spacing";
 import styled from "@emotion/styled";
 
 interface OrderAmountContentProps {
