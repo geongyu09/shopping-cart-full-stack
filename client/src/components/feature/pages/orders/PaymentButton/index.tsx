@@ -6,7 +6,7 @@ function PaymentButton() {
   const {
     data: {
       orderProducts,
-      priceInfo: { orderPrice },
+      priceInfo: { totalPrice },
     },
   } = useOrderQuery();
   const { navigate } = usePaymentNavigate();
@@ -14,7 +14,7 @@ function PaymentButton() {
   const handleClick = () => {
     const state = {
       products: orderProducts,
-      totalAmount: orderPrice,
+      totalAmount: totalPrice,
     };
     navigate(state);
   };
