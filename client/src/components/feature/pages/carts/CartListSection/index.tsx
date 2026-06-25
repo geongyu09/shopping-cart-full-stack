@@ -9,7 +9,6 @@ import useCheckedProductItems from "@hooks/feature/localStorageValue/useCheckedP
 import useCartItemDeleteMutation from "@hooks/feature/mutation/useCartItemDeleteMutation";
 import useCartQuantityUpdateMutation from "@hooks/feature/mutation/useCartQuantityUpdateMutation";
 import useCartQuery from "@hooks/feature/query/useCartQuery";
-import { getCheckedItemsFromLocalStorage } from "@libs/carts/localstorage";
 import {
   calcDeliveryFee,
   calcOrderAmount,
@@ -25,7 +24,7 @@ function CartListSection() {
   const { mutate: quantityMutate } = useCartQuantityUpdateMutation();
   const { mutate: deleteMutate } = useCartItemDeleteMutation();
 
-  const { checkedItems, select, unselect, unselectAll } =
+  const { checkedItems, select, unselect, unselectAll, updateCheckedItems } =
     useCheckedProductItems<Product["id"]>();
 
   const isInitialized = useRef(false);
@@ -36,15 +35,15 @@ function CartListSection() {
       if (isInitialized.current) return;
       isInitialized.current = true;
 
-      const storedCheckedItems = getCheckedItemsFromLocalStorage().filter(
-        (id) => cartData.some(({ product }) => product.id === id),
+      const storedCheckedItems = checkedItems.filter((id) =>
+        cartData.some(({ product }) => product.id === id),
       );
 
       if (storedCheckedItems.length === 0) {
-        cartData.forEach(({ product }) => select(product.id));
+        updateCheckedItems(cartData.map(({ product }) => product.id));
       }
     },
-    [cartData, select],
+    [cartData, checkedItems, updateCheckedItems],
   );
 
   const isAllChecked = cartData.every(({ product }) =>
@@ -56,7 +55,7 @@ function CartListSection() {
   const handleSelectAll = () => {
     if (isAllChecked) return unselectAll();
 
-    cartData.forEach(({ product }) => select(product.id));
+    updateCheckedItems(cartData.map(({ product }) => product.id));
   };
 
   const handleSelect = (id: string) => {

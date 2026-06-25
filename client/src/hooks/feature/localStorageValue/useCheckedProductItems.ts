@@ -17,9 +17,20 @@ export default function useCheckedProductItems<T>() {
     setValue([]);
   };
 
-  const selectAll = (items: T[]) => {
+  const updateCheckedItems = (items: T[] | ((prev: T[]) => T[])) => {
+    if (typeof items === "function") {
+      setValue((prev) => items(prev));
+      return;
+    }
+
     setValue(items);
   };
 
-  return { checkedItems: value, select, unselect, unselectAll, selectAll };
+  return {
+    checkedItems: value,
+    select,
+    unselect,
+    unselectAll,
+    updateCheckedItems,
+  };
 }
