@@ -4,16 +4,10 @@ import {
 } from "@utils/localStorage";
 import { useRef, useSyncExternalStore } from "react";
 
-const listeners = new Set<() => void>();
-
 const subscribe = (callback: () => void) => {
-  listeners.add(callback);
   window.addEventListener(LOCAL_STORAGE_CHANGE_EVENT, callback);
 
-  return () => {
-    listeners.delete(callback);
-    window.removeEventListener(LOCAL_STORAGE_CHANGE_EVENT, callback);
-  };
+  return () => window.removeEventListener(LOCAL_STORAGE_CHANGE_EVENT, callback);
 };
 
 function useLocalStorageValue<T>(key: string, fallback: T) {
