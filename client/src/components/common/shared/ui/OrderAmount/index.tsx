@@ -7,7 +7,7 @@ interface OrderAmountProps {
   orderAmount: number;
   deliveryFee: number;
   totalAmount: number;
-  discountAmount: number;
+  discountAmount?: number;
 }
 
 function OrderAmount({
@@ -34,12 +34,14 @@ function OrderAmount({
         </OrderAmountInfoValue>
       </OrderAmountInfoContainer>
       <Spacing size={0.5} />
-      <OrderAmountInfoContainer>
-        <OrderAmountInfoLabel>쿠폰 할인 금액</OrderAmountInfoLabel>
-        <OrderAmountInfoValue>
-          - {discountAmount.toLocaleString()}원
-        </OrderAmountInfoValue>
-      </OrderAmountInfoContainer>
+      {discountAmount && (
+        <OrderAmountInfoContainer>
+          <OrderAmountInfoLabel>쿠폰 할인 금액</OrderAmountInfoLabel>
+          <OrderAmountInfoValue>
+            - {discountAmount.toLocaleString()}원
+          </OrderAmountInfoValue>
+        </OrderAmountInfoContainer>
+      )}
       <Spacing size={0.5} />
       <OrderAmountInfoContainer>
         <OrderAmountInfoLabel>배송비</OrderAmountInfoLabel>

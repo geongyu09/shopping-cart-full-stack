@@ -1,9 +1,9 @@
 import type { Product } from "@/types/cartProduct";
 import Spacing from "@components/common/shared/layout/Spacing";
 import CartItem from "@components/common/shared/ui/CartItem";
-import CartOrderAmount from "@components/common/shared/ui/CartOrderAmount";
 import CheckBox from "@components/common/shared/ui/CheckBox";
 import Divider from "@components/common/shared/ui/Divider";
+import OrderAmount from "@components/common/shared/ui/OrderAmount";
 import styled from "@emotion/styled";
 import useCheckedProductItems from "@hooks/feature/localStorageValue/useCheckedProductItems";
 import useCartItemDeleteMutation from "@hooks/feature/mutation/useCartItemDeleteMutation";
@@ -17,6 +17,7 @@ import {
 } from "@libs/carts/utils";
 import { COLOR_PALETTE } from "@styles/colorPalette";
 import { useEffect, useRef } from "react";
+
 import CartListSectionSkeleton from "./skeleton";
 
 function CartListSection() {
@@ -116,7 +117,7 @@ function CartListSection() {
         </CartListWrapper>
         <Spacing size={3.25} />
       </CartListContainer>
-      <CartOrderAmount
+      <OrderAmount
         orderAmount={calcOrderAmount(cartData, checkedItems)}
         deliveryFee={calcDeliveryFee(calcOrderAmount(cartData, checkedItems))}
         totalAmount={calcTotalAmount(
