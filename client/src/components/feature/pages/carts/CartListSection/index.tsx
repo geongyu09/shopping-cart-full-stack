@@ -80,6 +80,10 @@ function CartListSection() {
       </EmptyCartContainer>
     );
 
+  const orderAmount = calcOrderAmount(cartData, checkedItems);
+  const deliveryFee = calcDeliveryFee(orderAmount);
+  const totalAmount = calcTotalAmount(orderAmount, deliveryFee);
+
   return (
     <>
       <CartListContainer>
@@ -117,12 +121,9 @@ function CartListSection() {
         <Spacing size={3.25} />
       </CartListContainer>
       <OrderAmount
-        orderAmount={calcOrderAmount(cartData, checkedItems)}
-        deliveryFee={calcDeliveryFee(calcOrderAmount(cartData, checkedItems))}
-        totalAmount={calcTotalAmount(
-          calcOrderAmount(cartData, checkedItems),
-          calcDeliveryFee(calcOrderAmount(cartData, checkedItems)),
-        )}
+        orderAmount={orderAmount}
+        deliveryFee={deliveryFee}
+        totalAmount={totalAmount}
       />
     </>
   );
