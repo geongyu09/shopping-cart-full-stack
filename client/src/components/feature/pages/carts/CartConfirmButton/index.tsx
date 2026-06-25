@@ -23,9 +23,7 @@ function CartConfirmButton() {
         quantity,
       }));
 
-    createOrder({ orderProducts });
-
-    goOrderConfirm();
+    createOrder({ orderProducts }, { onSuccess: goOrderConfirm });
   };
 
   return (
