@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
 export interface ModalContextType {
-  addModalAsync: (modalComponent: React.ReactNode) => void;
-  closeModalAsync: () => void;
+  addModal: (modalComponent: React.ReactNode) => void;
+  closeModal: () => void;
 }
 
 const ModalContext = createContext<ModalContextType | null>(null);

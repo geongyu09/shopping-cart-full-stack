@@ -9,7 +9,7 @@ export default function ModalProvider({ children }: PropsWithChildren) {
   const Queue = getQueue();
   const { flush, dummyKey } = useFlush();
 
-  const addModalAsync = useCallback(
+  const addModal = useCallback(
     (modalComponent: React.ReactNode) => {
       Queue.enqueue(modalComponent);
       flush();
@@ -17,12 +17,12 @@ export default function ModalProvider({ children }: PropsWithChildren) {
     [Queue, flush],
   );
 
-  const closeModalAsync = useCallback(() => {
+  const closeModal = useCallback(() => {
     Queue.dequeue();
     flush();
   }, [Queue, flush]);
 
-  const value = { addModalAsync, closeModalAsync };
+  const value = { addModal, closeModal };
 
   return (
     <ModalContext.Provider value={value}>

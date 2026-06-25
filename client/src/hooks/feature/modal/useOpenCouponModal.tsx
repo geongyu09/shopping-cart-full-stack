@@ -15,12 +15,12 @@ import { Fragment, Suspense, useRef, useState } from "react";
 const MAX_COUPON_COUNT = 2;
 
 function useOpenCouponModal() {
-  const { addModalAsync, closeModalAsync } = useModalContext();
+  const { addModal, closeModal } = useModalContext();
 
   const openCouponModal = () => {
-    addModalAsync(
+    addModal(
       <Suspense>
-        <ModalContent close={closeModalAsync} />
+        <ModalContent close={closeModal} />
       </Suspense>,
     );
   };
