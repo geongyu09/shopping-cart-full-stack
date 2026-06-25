@@ -10,7 +10,7 @@ import useDiscountPriceMutation from "@hooks/feature/mutation/useDiscountPriceMu
 import useOrderUpdateMutation from "@hooks/feature/mutation/useOrderUpdateMutation";
 import useCouponsQuery from "@hooks/feature/query/useCouponsQuery";
 import useOrderQuery from "@hooks/feature/query/useOrderQuery";
-import { Fragment, Suspense, useState } from "react";
+import { Fragment, Suspense, useRef, useState } from "react";
 
 const MAX_COUPON_COUNT = 2;
 
@@ -43,11 +43,18 @@ function ModalContent({ close }: { close: () => void }) {
     useState<string[]>(appliedCouponIds);
   const [discountAmount, setDiscountAmount] = useState<number>(discountPrice);
 
+  const latestRequestIdRef = useRef(0);
+
   const handleApplyCoupon = (couponIds: string[]) => {
+    const requestId = ++latestRequestIdRef.current;
+
     calculateDiscountPrice(
       { couponIds },
       {
-        onSuccess: ({ discountPrice }) => setDiscountAmount(discountPrice),
+        onSuccess: ({ discountPrice }) => {
+          if (requestId !== latestRequestIdRef.current) return;
+          setDiscountAmount(discountPrice);
+        },
       },
     );
   };
